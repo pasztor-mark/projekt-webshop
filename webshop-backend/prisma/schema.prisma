@@ -53,9 +53,10 @@ model Lesson {
   id          Int      @id @default(autoincrement())
   title       String
   description String
+  price Int
   startTime   DateTime
   endTime     DateTime
-  subject     Subject
+  subjects     Subject[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
