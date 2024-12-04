@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { GuidesService } from './guides.service';
 import { CreateGuideDto } from './dto/create-guide.dto';
 import { UpdateGuideDto } from './dto/update-guide.dto';
+import { $Enums } from '@prisma/client';
 
 @Controller('guides')
 export class GuidesController {
@@ -20,6 +21,21 @@ export class GuidesController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.guidesService.findOne(+id);
+  }
+
+  @Get('author/:authorId')
+  findManyByAuthorId(@Param('authorId') authorId: string) {
+    return this.guidesService.findManyByAuthorId(+authorId);
+  }
+
+  @Get('subject/:subject')
+  findManyBySubject(@Param('subject') subject: string) {
+    return this.guidesService.findManyBySubject(subject as $Enums.Subject);
+  }
+
+  @Get('level/:level')
+  findManyByLevel(@Param('level') level: string) {
+    return this.guidesService.findManyByLevel(level as $Enums.Level);
   }
 
   @Patch(':id')

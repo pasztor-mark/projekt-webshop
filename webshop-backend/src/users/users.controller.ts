@@ -17,6 +17,16 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('authors')
+  findAuthors() {
+    return this.usersService.findAuthors();
+  }
+
+  @Get('paying')
+  findPayingUsers() {
+    return this.usersService.findPayingUsers();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
