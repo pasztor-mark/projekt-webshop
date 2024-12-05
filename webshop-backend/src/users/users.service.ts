@@ -32,22 +32,22 @@ export class UsersService {
   async findAuthors() {
     return await this.db.user.findMany({
       where: {
-        OR: [
-          {
-            authored: {
-              some: {},
-            },
-          },
-          {
-            hostedLessons: {
-              some: {},
-            },
-          },
-        ],
+      OR: [
+        {
+        hostedLessons: {
+          some: {},
+        },
+        },
+        {
+        authoredGuides: {
+          some: {},
+        },
+        },
+      ],
       },
       include: {
-        authored: true,
-        hostedLessons: true,
+      authoredGuides: true,
+      hostedLessons: true,
       },
     });
   }
