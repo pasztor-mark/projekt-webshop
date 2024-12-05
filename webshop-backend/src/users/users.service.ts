@@ -29,6 +29,9 @@ export class UsersService {
   async findAll() {
     return await this.db.user.findMany();
   }
+  async findUserByEmail(email: string) {
+    return await this.db.user.findFirst(({ where: { email: email } }));
+  }
   async findAuthors() {
     return await this.db.user.findMany({
       where: {
