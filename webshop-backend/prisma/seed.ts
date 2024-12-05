@@ -7,7 +7,6 @@ import { CreateLessonDto } from '../src/lessons/dto/create-lesson.dto';
 import { $Enums } from '@prisma/client';
 import { Level } from '../../shared/types';
 
-
 const prisma = new PrismaService();
 
 const createUsers = async (count: number) => {
@@ -39,9 +38,10 @@ const createGuides = async (count: number, authorIds: number[]) => {
   return await prisma.guide.createMany({ data: guides });
 };
 
-const createLessons = async (count: number, hostIds: number[]) => {
+const createLessons = async (count: number, hostIds: number[], userIds: number[]) => {
   const lessons: CreateLessonDto[] = [];
   for (let i = 0; i < count; i++) {
+    const participantIds = faker.helpers.arrayElements(userIds, faker.number.int({ min: 1, max: 5 }));
     lessons.push({
       title: faker.lorem.words(3),
       description: faker.lorem.sentences(2),
@@ -51,10 +51,37 @@ const createLessons = async (count: number, hostIds: number[]) => {
       subject: faker.helpers.arrayElement(Object.values($Enums.Subject)),
       level: faker.helpers.arrayElement(Object.values($Enums.Level)),
       hostId: faker.helpers.arrayElement(hostIds),
-        
+      participantIds,
     });
   }
-  return await prisma.lesson.createMany({ data: lessons });
+
+  for (const lesson of lessons) {
+    await prisma.lesson.create({
+      data: {
+        title: lesson.title,
+        description: lesson.description,
+        price: lesson.price,
+        startTime: lesson.startTime,
+        endTime: lesson.endTime,
+        subject: lesson.subject,
+        level: lesson.level,
+        host: {
+          connect: { id: lesson.hostId },
+        },
+        participants: {
+          connect: lesson.participantIds.map(id => ({ id })),
+        },
+        orders: {
+          create: lesson.participantIds.map(id => ({
+            customerId: id,
+            status: 'Paid',
+
+            totalPrice: lesson.price,
+          })),
+        },
+      },
+    });
+  }
 };
 
 const createOrders = async (count: number, customerIds: number[], guideIds: number[], lessonIds: number[]) => {
@@ -97,7 +124,7 @@ const main = async () => {
   const guides = await prisma.guide.findMany();
   const guideIds = guides.map(guide => guide.id);
 
-  await createLessons(10, userIds);
+  await createLessons(10, userIds, userIds);
   const lessons = await prisma.lesson.findMany();
   const lessonIds = lessons.map(lesson => lesson.id);
 

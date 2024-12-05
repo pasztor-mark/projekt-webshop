@@ -22,7 +22,19 @@ export class LessonsService {
           host: {
             connect: { id: createLessonDto.hostId },
           },
-          
+          participants: {
+            connect: createLessonDto.participantIds.map(id => ({ id })),
+          },
+          orders: {
+            create: createLessonDto.participantIds.map(id => ({
+              customerId: id,
+              status: 'Paid',
+              lessons: {
+                connect: { id: lesson.id },
+              },
+              totalPrice: createLessonDto.price,
+            })),
+          },
         },
       });
       return 'Új tanóra létrehozva';
@@ -46,10 +58,7 @@ export class LessonsService {
               lessons: {
                 connect: { id: lessonId },
               },
-              customer: {
-                connect: { id },
-              },
-              totalPrice: 0
+              totalPrice: 0,
             })),
           },
         },
@@ -80,7 +89,7 @@ export class LessonsService {
     });
   }
 
-  async findManyByPriceRange(minPrice: number, maxPrice: number) {
+  async findManyByPriceRange(minPrice: number, maxPrice) {
     return await this.db.lesson.findMany({
       where: {
         price: {

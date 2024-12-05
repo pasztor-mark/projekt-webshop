@@ -50,22 +50,22 @@ model Guide {
 }
 
 model Lesson {
-  id          Int             @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
   description String
   price       Int
   startTime   DateTime
   endTime     DateTime
-  subject    Subject
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  subject     Subject
+  level       Level
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  hostId Int
-  host   User @relation(fields: [hostId], references: [id])
+  hostId      Int
+  host        User      @relation(fields: [hostId], references: [id])
 
-  participants User[] @relation("LessonParticipants")
-  level Level
-  orders Order[] @relation("LessonOrders")
+  participants User[]   @relation("LessonParticipants")
+  orders      Order[]   @relation("LessonOrders")
 }
 
 model User {
@@ -79,11 +79,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  authored Guide[]
-  orders   Order[]
-
-  hostedLessons Lesson[]
-
+  authoredGuides Guide[]
+  orders         Order[]
+  hostedLessons  Lesson[]
   participatedLessons Lesson[] @relation("LessonParticipants")
 }
 

@@ -30,4 +30,7 @@ export class CreateLessonDto {
 
   subject: $Enums.Subject;
 
+  @IsArray()
+  @IsInt({ each: true })
+  participantIds: number[];
 }
