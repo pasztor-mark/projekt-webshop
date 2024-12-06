@@ -1,7 +1,8 @@
 
 import { Outlet } from 'react-router'
-import { AuthProvider } from './AuthContext'
+import { AuthProvider, useAuth } from './AuthContext'
 export default function PageLayout() {
+    const {user} = useAuth()
 
    return (
         <AuthProvider>
@@ -9,8 +10,11 @@ export default function PageLayout() {
 
             </header>
             <main>
-                
-                <Outlet />
+                {
+                    user ? 
+                    <Outlet /> :
+                    <p>Not logged in</p>
+                }
             </main>
             <footer>
 

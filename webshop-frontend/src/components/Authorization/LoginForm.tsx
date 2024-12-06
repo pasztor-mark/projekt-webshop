@@ -24,7 +24,11 @@ export default function LoginForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "localhost:3000/",
+          "Access-Control-Allow-Credentials": "true",
         },
+        
+        mode: 'cors',
         body: JSON.stringify({ email, password }),
         credentials: 'include', 
       });
@@ -65,7 +69,7 @@ export default function LoginForm() {
         {error && <p className="text-red-500">{error}</p>}
         <Button type="submit">Bejelentkezés</Button>
       </form>
-      {token && <p>Token: {token}</p>}
+      
     </>
   );
 }
