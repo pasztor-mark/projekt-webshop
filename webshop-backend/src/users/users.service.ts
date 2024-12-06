@@ -16,13 +16,13 @@ export class UsersService {
           email: createUserDto.email,
           password: createUserDto.password,
           name: createUserDto.name,
-          address: createUserDto.address,
-          phoneNumber: createUserDto.phoneNumber,
+          address: "",
+          phoneNumber: ""
         },
       });
       return 'Új felhasználó létrehozva';
     } catch (error) {
-      return 'Hiba a mentés során';
+      return error.message;
     }
   }
 

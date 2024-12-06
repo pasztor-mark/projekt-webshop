@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 interface FetchOptions {
     method?: string;
     headers?: HeadersInit;
-    body?: BodyInit;
+    body?: any;
 }
 
 export const useFetch = <T>(url: string, options?: FetchOptions) => {
