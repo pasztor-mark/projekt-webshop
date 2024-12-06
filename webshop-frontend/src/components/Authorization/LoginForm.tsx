@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as yup from 'yup';
+import { useAuth } from '@/components/AuthContext';
 
 export default function LoginForm() {
   const schema = yup.object().shape({
@@ -13,7 +14,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
+  const { login } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,12 +26,13 @@ export default function LoginForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', 
       });
       if (!response.ok) {
         throw new Error('Network response was not ok: ' + response.statusText);
       }
       const result = await response.json();
-      setToken(result.access_token);
+      login(result.user);
     } catch (err: any) {
       setError(err.message);
     }
