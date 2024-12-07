@@ -28,12 +28,13 @@ import {
   SidebarSeparator,
   
 } from "./sidebar";
+import {User} from '@/../../shared/types';
 
 import { Avatar, AvatarFallback } from "./avatar";
 
 import { NavLink } from "react-router";
 
-export default function DesktopNavigation({ user } : {user: any}) {
+export default function DesktopNavigation({ user } : {user: User | null}) {
   const { logout } = useAuth();
   const items = [
     {
@@ -162,9 +163,10 @@ export default function DesktopNavigation({ user } : {user: any}) {
                   <SidebarMenuButton asChild className="h-12 flex flex-row basis-10/12">
                     <a href="/profile">
                       <Avatar>
-                        <AvatarFallback className="text-xl">{user.name[0].toUpperCase()}{user.name[1]}</AvatarFallback>
+                        <AvatarFallback className="text-xl">{user ? user.name[0].toUpperCase() : "?"}{ user? user.name[1] : "?"}</AvatarFallback>
                       </Avatar>
-                      <p className="text-lg">{user.name}</p>
+                      <p className="text-lg">{
+                        user ? user.name : "USER"}</p>
                     </a>
                   </SidebarMenuButton>
                   <SidebarMenuButton className="basis-2/12" onClick={() => logout()}>

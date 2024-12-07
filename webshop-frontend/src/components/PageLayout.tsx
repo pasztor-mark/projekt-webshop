@@ -5,6 +5,7 @@ import DesktopNavigation from "./ui/DesktopNavigation";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { useEffect, useState } from "react";
 
+
 export default function PageLayout() {
   const { isAuthenticated, loading, user } = useAuth();
   const [fetchedUser, setUser] = useState(null);
@@ -39,7 +40,7 @@ export default function PageLayout() {
           if (req.ok) {
             const data = await req.json();
             setUser(data);
-            
+            console.log(data);
           } else {
             console.error("Failed to fetch user");
           }

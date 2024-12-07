@@ -21,4 +21,14 @@ export enum Subject {
     Canceled = 'Canceled',
   }
   
+  export interface User {
+    id?: number,
+    email: string,
+    name: string,
+    password: string,
+    address?: string,
+    phoneNumber?: string,
+    updatedAt?: string,
+    createdAt?: string,
+  }
   

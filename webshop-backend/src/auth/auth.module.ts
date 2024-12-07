@@ -16,7 +16,7 @@ import { LocalStrategy } from './local.strategy';
         JwtModule.register({
             secret: process.env.JWT_SECRET,
             signOptions: { expiresIn: '1d' },
-            secretOrPrivateKey: process.env.JWT_SECRET
+            
         })
     ],
     providers: [UsersService, PrismaService, AuthService, LocalStrategy, JwtStrategy],
