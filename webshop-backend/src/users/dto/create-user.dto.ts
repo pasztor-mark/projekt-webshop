@@ -11,8 +11,7 @@ export class CreateUserDto {
 
     @IsEmail()
     email: string
-
-    @MinLength(9)
+    @IsOptional()
     address: string
     @IsOptional()
     @IsPhoneNumber()
