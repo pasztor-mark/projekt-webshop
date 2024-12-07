@@ -26,13 +26,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-  SidebarTrigger,
+  
 } from "./sidebar";
 
 import { Avatar, AvatarFallback } from "./avatar";
-import { Tooltip } from "@/components/ui/tooltip";
 
-export default function DesktopNavigation() {
+import { NavLink } from "react-router";
+
+export default function DesktopNavigation({ user } : {user: any}) {
   const { logout } = useAuth();
   const items = [
     {
@@ -40,7 +41,7 @@ export default function DesktopNavigation() {
       items: [
         {
           label: "Főoldal",
-          icon: <FaHouse size={24} />,
+          icon: <FaHouse size={28} />,
           to: "/",
         },
       ],
@@ -50,22 +51,22 @@ export default function DesktopNavigation() {
       items: [
         {
           label: "Tanulási útmutatók",
-          icon: <FaBookmark size={24} />,
+          icon: <FaBookmark size={28} />,
           to: "/guides",
         },
         {
           label: "Tantárgyak",
-          icon: <FaBookOpen size={24} />,
+          icon: <FaBookOpen size={28} />,
           to: "/guides/subjects",
         },
         {
           label: "Szintek",
-          icon: <FaChartSimple size={24} />,
+          icon: <FaChartSimple size={28} />,
           to: "/guides/levels",
         },
         {
           label: "Írók",
-          icon: <FaPencil size={24} />,
+          icon: <FaPencil size={28} />,
           to: "/guides/authors",
         },
       ],
@@ -75,22 +76,22 @@ export default function DesktopNavigation() {
       items: [
         {
           label: "Személyes tanórák",
-          icon: <FaPeopleGroup size={24} />,
+          icon: <FaPeopleGroup size={28} />,
           to: "/lessons",
         },
         {
           label: "Tantárgyak",
-          icon: <FaBookOpen size={24} />,
+          icon: <FaBookOpen size={28} />,
           to: "/lessons/subjects",
         },
         {
           label: "Szintek",
-          icon: <FaChartSimple size={24} />,
+          icon: <FaChartSimple size={28} />,
           to: "/lessons/levels",
         },
         {
           label: "Tanárok",
-          icon: <FaPersonChalkboard size={24} />,
+          icon: <FaPersonChalkboard size={28} />,
           to: "/lessons/tutors",
         },
       ],
@@ -100,22 +101,22 @@ export default function DesktopNavigation() {
       items: [
         {
           label: "Vásárolt tananyagok",
-          icon: <FaBookmark size={24} />,
+          icon: <FaBookmark size={28} />,
           to: "/products",
         },
         {
           label: "Vásárolt tanórák",
-          icon: <FaUserClock size={24} />,
+          icon: <FaUserClock size={28} />,
           to: "/products/categories",
         },
         {
           label: "Írt tananyagok",
-          icon: <FaClipboardList size={24} />,
+          icon: <FaClipboardList size={28} />,
           to: "/products/orders",
         },
         {
           label: "Tanított tanórák",
-          icon: <FaUsersRectangle size={24} />,
+          icon: <FaUsersRectangle size={28} />,
           to: "/products/customers",
         },
       ],
@@ -123,9 +124,9 @@ export default function DesktopNavigation() {
   ];
 
   return (
-    <nav className="bg-emerald-600 w-full h-12 flex items-center justify-between px-4">
-      {/*isAuthenticated && <Button onClick={() => logout()}>Logout</Button>*/}
-      <SidebarTrigger />
+    
+      
+      
       <Sidebar>
         <SidebarContent>
           <SidebarHeader className="flex flex-row justify-between items-center mx-3">
@@ -140,11 +141,11 @@ export default function DesktopNavigation() {
                 <SidebarMenu>
                   {group.items.map((item) => (
                     <SidebarMenuItem key={item.label}>
-                      <SidebarMenuButton asChild>
-                        <a href={item.to}>
+                      <SidebarMenuButton className="hover:text-emerald-400" asChild>
+                        <NavLink className={({isActive}) => isActive ? "text-emerald-400" : ""} to={item.to}>
                           {item.icon}
                           <p className="text-lg">{item.label}</p>
-                        </a>
+                        </NavLink>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -161,9 +162,9 @@ export default function DesktopNavigation() {
                   <SidebarMenuButton asChild className="h-12 flex flex-row basis-10/12">
                     <a href="/profile">
                       <Avatar>
-                        <AvatarFallback>US</AvatarFallback>
+                        <AvatarFallback className="text-xl">{user.name[0].toUpperCase()}{user.name[1]}</AvatarFallback>
                       </Avatar>
-                      <p className="text-lg">User</p>
+                      <p className="text-lg">{user.name}</p>
                     </a>
                   </SidebarMenuButton>
                   <SidebarMenuButton className="basis-2/12" onClick={() => logout()}>
@@ -176,6 +177,6 @@ export default function DesktopNavigation() {
           </SidebarGroup>
         </SidebarFooter>
       </Sidebar>
-    </nav>
+    
   );
 }

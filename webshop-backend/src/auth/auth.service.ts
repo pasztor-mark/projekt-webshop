@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/co
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -48,7 +49,7 @@ export class AuthService {
     const payload = { username: validatedUser.email, sub: validatedUser.id };
     const token = await this.jwtService.signAsync(payload, { secret: process.env.JWT_SECRET });
     
-    res.cookie('token', token, { httpOnly: true, secure: false }); 
+    await res.cookie('token', token, { httpOnly: false, secure: false, sameSite: 'lax' }); 
     
     return res.send({ message: 'Login successful', user: { email: validatedUser.email, id: validatedUser.id } });
   }
@@ -63,12 +64,7 @@ export class AuthService {
   }
 
   async logout(req: any, res: any) {
-    req.session.destroy((err: any) => {
-      if (err) {
-        return res.status(500).send({ message: 'Logout failed' });
-      }
-      res.clearCookie('token');
-      res.send({ message: 'Logout successful' });
-    });
+    res.clearCookie('token');
+    res.send({ message: 'Logout successful' });
   }
 }

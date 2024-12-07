@@ -8,13 +8,7 @@ async function bootstrap() {
   
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser());
-  app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 },
-    
-  }))
+
   app.enableCors({
     origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

@@ -19,7 +19,7 @@ import { LocalStrategy } from './local.strategy';
             secretOrPrivateKey: process.env.JWT_SECRET
         })
     ],
-    providers: [UsersService, PrismaService, AuthService, LocalStrategy],
+    providers: [UsersService, PrismaService, AuthService, LocalStrategy, JwtStrategy],
     controllers: [AuthController]
 })
 export class AuthModule {}

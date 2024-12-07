@@ -3,23 +3,21 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import PageLayout from "./components/PageLayout";
 import LoginPage from "./pages/Login";
 import { AuthProvider } from "./components/AuthContext";
+import Home from "./pages/Home";
 
 
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        
-
         <BrowserRouter>
           <Routes>
             <Route path="/authorize" element={<LoginPage />} />
             <Route path="/" element={<PageLayout />}>
-              <Route path="/dashboard" element={<p>Dashboard</p>} />
+              <Route index element={<Home/>} />
             </Route>
           </Routes>
         </BrowserRouter>
-        
       </AuthProvider>
     </ThemeProvider>
   );
