@@ -4,10 +4,13 @@ import PageLayout from "./components/PageLayout";
 import LoginPage from "./pages/Login";
 import { AuthProvider } from "./components/AuthContext";
 
+
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        
+
         <BrowserRouter>
           <Routes>
             <Route path="/authorize" element={<LoginPage />} />
@@ -16,6 +19,7 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
+        
       </AuthProvider>
     </ThemeProvider>
   );

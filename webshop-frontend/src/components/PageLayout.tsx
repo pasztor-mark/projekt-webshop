@@ -1,19 +1,27 @@
-import { Outlet } from 'react-router';
+import { Outlet, Navigate } from 'react-router';
 import { useAuth } from './AuthContext';
 import { Button } from './ui/button';
+import DesktopNavigation from './ui/DesktopNavigation';
 
 export default function PageLayout() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <>
+    <div className='bg-gradient-to-br from-neutral-950 to-stone-900 min-h-screen min-w-full'>
       <header>
+        <DesktopNavigation />
         {isAuthenticated && <Button onClick={() => logout()}>Logout</Button>}
       </header>
       <main>
-        {isAuthenticated ? <Outlet /> : <p>Not logged in</p>}
+        {isAuthenticated ? <Outlet /> : <Navigate to="/authorize" />}
       </main>
       <footer>
+        
       </footer>
-    </>
+    </div>
   );
 }
