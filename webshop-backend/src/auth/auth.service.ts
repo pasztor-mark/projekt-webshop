@@ -26,11 +26,12 @@ export class AuthService {
     if (!validatedUser) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    passport.serializeUser()
+    
     const payload = { username: validatedUser.email, sub: validatedUser.id };
-    const token = this.jwtService.sign(payload);
+    const token = this.jwtService.signAsync(payload, { secret: process.env.JWT_SECRET });
     req.session.token = token;
     res.cookie('token', token, { httpOnly: true, secure: false }); 
+    
     return res.send({ message: 'Login successful' });
   }
 }

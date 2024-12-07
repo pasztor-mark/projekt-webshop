@@ -7,9 +7,10 @@ import { LessonsModule } from './lessons/lessons.module';
 import { OrdersModule } from './orders/orders.module';
 import { PrismaService } from './prisma.service';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, GuidesModule, LessonsModule, OrdersModule, AuthModule],
+  imports: [UsersModule, GuidesModule, LessonsModule, OrdersModule, AuthModule, ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

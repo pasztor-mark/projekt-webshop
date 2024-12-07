@@ -6,7 +6,7 @@ import { LocalAuthGuard } from './local-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(LocalAuthGuard)
+  
   @Post('login')
   async login(@Request() req, @Response() res) {
     const user = req.body
