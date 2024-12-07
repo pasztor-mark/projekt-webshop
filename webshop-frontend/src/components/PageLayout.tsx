@@ -1,24 +1,19 @@
+import { Outlet } from 'react-router';
+import { useAuth } from './AuthContext';
+import { Button } from './ui/button';
 
-import { Outlet } from 'react-router'
-import { AuthProvider, useAuth } from './AuthContext'
 export default function PageLayout() {
-    const {user} = useAuth()
-
-   return (
-        <AuthProvider>
-            <header>
-
-            </header>
-            <main>
-                {
-                    user ? 
-                    <Outlet /> :
-                    <p>Not logged in</p>
-                }
-            </main>
-            <footer>
-
-            </footer>
-        </AuthProvider>
-    )
+  const { isAuthenticated, logout } = useAuth();
+  return (
+    <>
+      <header>
+        {isAuthenticated && <Button onClick={() => logout()}>Logout</Button>}
+      </header>
+      <main>
+        {isAuthenticated ? <Outlet /> : <p>Not logged in</p>}
+      </main>
+      <footer>
+      </footer>
+    </>
+  );
 }

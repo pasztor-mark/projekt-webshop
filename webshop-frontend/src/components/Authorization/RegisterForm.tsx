@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import * as yup from 'yup'
-import { useFetch } from "@/hooks/useFetch"
+import { useAuth } from "../AuthContext"
+import { useNavigate } from 'react-router';
 
 export default function RegisterForm() {
 
@@ -18,11 +19,20 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
+  const {login} = useAuth()
+  const navigate = useNavigate();
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    schema.validate({ username, email, password, confirmPassword }).then(() => {
-      console.log(JSON.stringify({ email, password, name: username }))
-      fetch("http://localhost:3000/users", { method: "POST", body: JSON.stringify({ email, password, name: username }), headers: { "Content-Type": "application/json" } })
+    schema.validate({ username, email, password, confirmPassword }).then(async () => {
+      
+      const res = await fetch("http://localhost:3000/auth/register", { method: "POST", body: JSON.stringify({ email, password, name: username }), headers: { "Content-Type": "application/json" } })
+      if (!res.ok) {
+        throw new Error("Hiba történt a regisztráció során")
+      }
+      const result = await res.json()
+      login({ email: result.user.email, id: result.user.id })
+      navigate('/');
     }).catch((err) => {
       setError(err.message)
     })

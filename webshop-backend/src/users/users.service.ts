@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -11,16 +11,24 @@ export class UsersService {
   }
   async create(createUserDto: CreateUserDto) {
     try {
+      const existingUser = await this.db.user.findFirst({
+        where: {
+          email: createUserDto.email,
+        },
+      })
+      if (existingUser) {
+        throw new ConflictException('Ez az email cím már használatban van');  
+      }
       await this.db.user.create({
         data: {
           email: createUserDto.email,
           password: createUserDto.password,
           name: createUserDto.name,
-          address: "",
-          phoneNumber: ""
+          address: createUserDto.address  || "",
+          phoneNumber: createUserDto.phoneNumber || ""
         },
       });
-      return 'Új felhasználó létrehozva';
+      return createUserDto;
     } catch (error) {
       return error.message;
     }
