@@ -40,7 +40,7 @@ export default function PageLayout() {
           if (req.ok) {
             const data = await req.json();
             setUser(data);
-            console.log(data);
+            
           } else {
             console.error("Failed to fetch user");
           }
@@ -62,7 +62,7 @@ export default function PageLayout() {
 
         <main className="bg-gradient-to-br from-neutral-950 px-3 to-stone-900 min-h-screen min-w-full ">
           <SidebarTrigger className=" p-5 bg-emerald-500 rounded-full fixed bottom-4" />
-          {isAuthenticated ? <Outlet /> : <Navigate to="/authorize" />}
+          {isAuthenticated ? <Outlet context={{user: fetchedUser}} /> : <Navigate to="/authorize" />}
         </main>
         <footer></footer>
       </SidebarProvider>
