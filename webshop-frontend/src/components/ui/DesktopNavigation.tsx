@@ -179,15 +179,15 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
                   asChild
                   className="h-12 flex flex-row basis-10/12"
                 >
-                  <a href="/profile">
-                    <Avatar>
+                  <NavLink to={"/user/" + user?.id}>
+                    <Avatar className="border border-emerald-500">
                       <AvatarFallback className="text-xl">
                         {user ? user.name[0].toUpperCase() : "?"}
                         {user ? user.name[1] : "?"}
                       </AvatarFallback>
                     </Avatar>
                     <p className="text-lg">{user ? user.name : "USER"}</p>
-                  </a>
+                  </NavLink>
                 </SidebarMenuButton>
                 <SidebarMenuButton
                   className="basis-2/12"

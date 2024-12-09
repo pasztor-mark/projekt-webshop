@@ -4,6 +4,7 @@ import PageLayout from "./components/PageLayout";
 import LoginPage from "./pages/Login";
 import { AuthProvider } from "./components/AuthContext";
 import Home from "./pages/Home";
+import Profile from "./pages/user/Profile";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/authorize" element={<LoginPage />} />
             <Route path="/" element={<PageLayout />}>
               <Route index element={<Home/>} />
+              <Route path="user/:userId" element={<Profile/>} />
             </Route>
           </Routes>
         </BrowserRouter>

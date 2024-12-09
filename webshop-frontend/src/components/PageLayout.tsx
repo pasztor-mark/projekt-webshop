@@ -5,6 +5,7 @@ import DesktopNavigation from "./ui/DesktopNavigation";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { useEffect, useState } from "react";
 import { getCookie } from "../../../shared/types";
+import { Toaster } from "./ui/sonner";
 
 
 export default function PageLayout() {
@@ -60,6 +61,7 @@ export default function PageLayout() {
           <SidebarTrigger className=" p-5 ml-2 bg-emerald-500 rounded-full fixed bottom-4" />
           {isAuthenticated ? <Outlet context={{user: fetchedUser}} /> : <Navigate to="/authorize" />}
         </main>
+        <Toaster />
         <footer></footer>
       </SidebarProvider>
     </>

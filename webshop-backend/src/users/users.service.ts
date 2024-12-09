@@ -39,6 +39,21 @@ export class UsersService {
   async findAll() {
     return await this.db.user.findMany();
   }
+  async getProfileData(userId: number) {
+    const profile = await this.db.user.findFirst({
+      where: {
+        id: userId
+      },
+      include: {
+        authoredGuides: true,
+        hostedLessons: true,
+        
+      }
+      
+    })
+    delete profile.password
+    return profile
+  }
   async findUserByEmail(email: string) {
     return await this.db.user.findFirst(({ where: { email: email } }));
   }
