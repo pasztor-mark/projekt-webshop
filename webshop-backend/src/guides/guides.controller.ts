@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { GuidesService } from './guides.service';
 import { CreateGuideDto } from './dto/create-guide.dto';
 import { UpdateGuideDto } from './dto/update-guide.dto';
 import { $Enums } from '@prisma/client';
+import { Guide } from '../../../shared/types';
 
 @Controller('guides')
 export class GuidesController {
@@ -16,6 +17,16 @@ export class GuidesController {
   @Get()
   findAll() {
     return this.guidesService.findAll();
+  }
+  @Get("list")
+  async findGuideList(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 8,
+    @Query('search') search: string = '',
+    @Query('orderFactor') orderFactor: keyof Guide = 'id',
+    @Query('order') order: 'asc' | 'desc' = 'asc'
+  ) {
+    return await this.guidesService.findGuideList(+page, +pageSize, search, orderFactor, order);
   }
 
   @Get(':id')
@@ -41,6 +52,7 @@ export class GuidesController {
   findManyByLevel(@Param('level') level: string) {
     return this.guidesService.findManyByLevel(level as $Enums.Level);
   }
+  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGuideDto: UpdateGuideDto) {

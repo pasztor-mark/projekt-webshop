@@ -1,70 +1,100 @@
 import { Injectable } from '@nestjs/common';
-
-import { UpdateGuideDto } from './dto/update-guide.dto';
-
 import { PrismaService } from 'src/prisma.service';
-import { $Enums } from '@prisma/client';
+import { $Enums, Guide } from '@prisma/client';
 import { CreateGuideDto } from './dto/create-guide.dto';
+import { UpdateGuideDto } from './dto/update-guide.dto';
 
 @Injectable()
 export class GuidesService {
-  db: PrismaService;
-  constructor(db: PrismaService) {
-    this.db = db;
-  }
+  constructor(private readonly db: PrismaService) {}
+
   async create(createGuideDto: CreateGuideDto) {
     try {
-      await this.db.guide.create({
-        data: {
-          title: createGuideDto.title,
-          description: createGuideDto.description,
-          price: createGuideDto.price,
-          subject: createGuideDto.subject as $Enums.Subject,
-          level: createGuideDto.level,
-          author: {
-            connect: {id: createGuideDto.authorId}
-          }
-      }
-    })
-    return "Új útmutató létrehozva"
-  } catch (error) {
-    return "Hiba a mentés során"
+      const guide = await this.db.guide.create({
+        data: createGuideDto,
+      });
+      return guide;
+    } catch (error) {
+      return 'Hiba a mentés során';
+    }
   }
-  }
+
   async findAll() {
     return await this.db.guide.findMany();
   }
+
+  async findGuideList(
+    page: number,
+    pageSize: number,
+    search: string,
+    orderFactor: keyof Guide,
+    order: 'asc' | 'desc',
+  ) {
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+
+    const guides = await this.db.guide.findMany({
+      skip: skip,
+      take,
+      where: {
+        OR: [
+          { title: { contains: search } },
+          { description: { contains: search } },
+          { author: { name: { contains: search } } },
+        ],
+      },
+      orderBy: {
+        [orderFactor]: order,
+      },
+      include: {
+        author: true,
+        orders: true,
+      },
+    });
+
+    guides.forEach((guide) => {
+      delete guide.author.password;
+      delete guide.author.email;
+      
+    });
+    
+    return { guides, totalPages: Math.ceil((await this.db.guide.count()) / pageSize)}
+  }
+
   async findManyByAuthorId(authorId: number) {
     return await this.db.guide.findMany({
       where: {
-        authorId
-      }
-    })
+        authorId,
+      },
+    });
   }
+
   async findManyByCopyOwner(copyOwnerId: number) {
     return await this.db.guide.findMany({
       where: {
         orders: {
           some: {
-            customerId: copyOwnerId
-          }
-        }
-      }
-  })
-}
+            customerId: copyOwnerId,
+          },
+        },
+      },
+    });
+  }
+
   async findManyBySubject(subject: $Enums.Subject) {
     return await this.db.guide.findMany({
       where: {
-        subject
-      }
-    })
+        subject,
+      },
+    });
   }
+
   async findManyByLevel(level: $Enums.Level) {
     return await this.db.guide.findMany({
       where: {
-        level
-      }
-    })
+        level,
+      },
+    });
   }
 
   async findOne(id: number) {
@@ -72,25 +102,26 @@ export class GuidesService {
       where: {
         id
       },
-    })
+    });
   }
 
   async update(id: number, updateGuideDto: UpdateGuideDto) {
     await this.db.guide.update({
       where: {
-        id
+        id,
       },
-      data: updateGuideDto
+      data: updateGuideDto,
     });
-  
-  return `#${id} útmutató frissítve`;
+
+    return `#${id} útmutató frissítve`;
   }
+
   async remove(id: number) {
     await this.db.guide.delete({
       where: {
         id
-      }
-    })
+      },
+    });
     return ` #${id} útmutató törölve`;
   }
 }

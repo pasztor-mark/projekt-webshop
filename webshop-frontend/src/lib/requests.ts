@@ -20,6 +20,7 @@ export async function fetchLessons(token: string | undefined, user: User) {
     throw new Error("Failed to fetch lessons");
   }
 }
+
 export async function fetchGuides(token: string | undefined, user: User) {
   const res = await fetch(
     "http://localhost:3000/guides/copyOwner/" + user.id,

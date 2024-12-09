@@ -3,13 +3,16 @@ import {
   FaArrowRightFromBracket,
   FaAward,
   FaBookmark,
-  FaBookOpen,
-  FaChartSimple,
+  
+  FaRegCalendarPlus,
+  
   FaClipboardList,
   FaHouse,
   FaPencil,
   FaPeopleGroup,
   FaPersonChalkboard,
+  
+  FaPlus,
   FaUserClock,
   FaUsersRectangle,
 } from "react-icons/fa6";
@@ -54,16 +57,7 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
           icon: <FaBookmark size={28} />,
           to: "/guides",
         },
-        {
-          label: "Tantárgyak",
-          icon: <FaBookOpen size={28} />,
-          to: "/guides/subjects",
-        },
-        {
-          label: "Szintek",
-          icon: <FaChartSimple size={28} />,
-          to: "/guides/levels",
-        },
+
         {
           label: "Írók",
           icon: <FaPencil size={28} />,
@@ -79,16 +73,7 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
           icon: <FaPeopleGroup size={28} />,
           to: "/lessons",
         },
-        {
-          label: "Tantárgyak",
-          icon: <FaBookOpen size={28} />,
-          to: "/lessons/subjects",
-        },
-        {
-          label: "Szintek",
-          icon: <FaChartSimple size={28} />,
-          to: "/lessons/levels",
-        },
+
         {
           label: "Tanárok",
           icon: <FaPersonChalkboard size={28} />,
@@ -119,10 +104,26 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
           icon: <FaUsersRectangle size={28} />,
           to: "/products/customers",
         },
+         
       ],
     },
+    {
+      group: "Hozzájárulás",
+      items: [
+        {
+          label: "Új tananyag",
+          icon: <FaPlus size={28} />,
+          to: "/contribute/guide",
+        },
+        {
+          label: "Új tanóra",
+          icon: <FaRegCalendarPlus size={28} />,
+          to: "/contribute/lesson",
+        },
+      ],
+      
+    }
   ];
-
   return (
     <Sidebar>
       <SidebarContent>

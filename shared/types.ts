@@ -53,6 +53,20 @@ export enum Subject {
     createdAt? : string
     updatedAt?: string
   }
+  export interface Order {
+    id?: number
+    status: OrderStatus
+    totalPrice: number
+    customerId: number
+    guideId?: number
+    lessonId?: number
+    createdAt?: string
+    updatedAt?: string
+  }
+  export interface GuideWithAuthor extends Guide {
+    author: User
+    orders: Order[]
+  }
   export const getCookie = (name: string) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

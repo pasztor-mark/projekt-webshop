@@ -5,6 +5,7 @@ import LoginPage from "./pages/Login";
 import { AuthProvider } from "./components/AuthContext";
 import Home from "./pages/Home";
 import Profile from "./pages/user/Profile";
+import Guides from "./pages/guides/guides";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/authorize" element={<LoginPage />} />
             <Route path="/" element={<PageLayout />}>
               <Route index element={<Home/>} />
+              <Route path="guides" element={<Guides/>} />
               <Route path="user/:userId" element={<Profile/>} />
             </Route>
           </Routes>

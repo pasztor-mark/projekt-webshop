@@ -45,7 +45,7 @@ export default function Profile() {
         toast.success("Profil hivatkozás másolva a vágólapra");
       })
       .catch((err) => {
-        toast.error("Másolás sikertelen");
+        toast.error("Másolás sikertelen:" + err);
       });
   };
 
