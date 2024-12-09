@@ -6,7 +6,7 @@ import { ScrollArea } from "../ui/scroll-area";
 export default function GuideData({ guides }: { guides: Guide[] | null }) {
   return (
     <>
-      <div className="bg-neutral-800 pt-4 flex-1 h-[90vh] flex flex-col rounded-3xl">
+      <div className="bg-stone-300 dark:bg-neutral-800 pt-4 flex-1 h-[90vh] flex flex-col rounded-3xl">
         <h3 className="mx-auto text-center text-2xl">Tananyagok</h3>
         <hr className=" border border-white w-[90%] my-3 mx-auto" />
         <div className="flex flex-col gap-2 px-3">

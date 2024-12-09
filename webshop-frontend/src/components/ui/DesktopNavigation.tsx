@@ -1,8 +1,7 @@
 import { useAuth } from "../AuthContext";
 import {
-    FaArrowRightFromBracket,
+  FaArrowRightFromBracket,
   FaAward,
-
   FaBookmark,
   FaBookOpen,
   FaChartSimple,
@@ -26,15 +25,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-  
 } from "./sidebar";
-import {User} from '@/../../shared/types';
+import { User } from "@/../../shared/types";
 
 import { Avatar, AvatarFallback } from "./avatar";
 
 import { NavLink } from "react-router";
+import ThemeToggle from "./ThemeToggle";
 
-export default function DesktopNavigation({ user } : {user: User | null}) {
+export default function DesktopNavigation({ user }: { user: User | null }) {
   const { logout } = useAuth();
   const items = [
     {
@@ -125,60 +124,82 @@ export default function DesktopNavigation({ user } : {user: User | null}) {
   ];
 
   return (
-    
-      
-      
-      <Sidebar>
-        <SidebarContent>
-          <SidebarHeader className="flex flex-row justify-between items-center mx-3">
-            <FaAward size={36} />
-            <h1 className="text-3xl">Webshop</h1>
-          </SidebarHeader>
-          {items.map((group) => (
-            <SidebarGroup key={group.group}>
-              <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
-              <SidebarSeparator />
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {group.items.map((item) => (
-                    <SidebarMenuItem key={item.label}>
-                      <SidebarMenuButton className="hover:text-emerald-400" asChild>
-                        <NavLink className={({isActive}) => isActive ? "text-emerald-400" : ""} to={item.to}>
-                          {item.icon}
-                          <p className="text-lg">{item.label}</p>
-                        </NavLink>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          ))}
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarGroup>
+    <Sidebar>
+      <SidebarContent>
+        <SidebarHeader className="flex flex-row justify-between items-center mx-3">
+          <FaAward size={36} />
+          <h1 className="text-3xl">Webshop</h1>
+        </SidebarHeader>
+        {items.map((group) => (
+          <SidebarGroup key={group.group}>
+            <SidebarGroupLabel>{group.group}</SidebarGroupLabel>
+            <SidebarSeparator />
             <SidebarGroupContent>
               <SidebarMenu>
-                <SidebarMenuItem className="flex items-center">
-                  <SidebarMenuButton asChild className="h-12 flex flex-row basis-10/12">
-                    <a href="/profile">
-                      <Avatar>
-                        <AvatarFallback className="text-xl">{user ? user.name[0].toUpperCase() : "?"}{ user? user.name[1] : "?"}</AvatarFallback>
-                      </Avatar>
-                      <p className="text-lg">{
-                        user ? user.name : "USER"}</p>
-                    </a>
-                  </SidebarMenuButton>
-                  <SidebarMenuButton className="basis-2/12" onClick={() => logout()}>
-                    <FaArrowRightFromBracket size={36}  color="red"/>
-                    
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      className="hover:text-emerald-400"
+                      asChild
+                    >
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "text-emerald-400" : ""
+                        }
+                        to={item.to}
+                      >
+                        {item.icon}
+                        <p className="text-lg">{item.label}</p>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-        </SidebarFooter>
-      </Sidebar>
-    
+        ))}
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <ThemeToggle />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem className="flex items-center">
+                <SidebarMenuButton
+                  asChild
+                  className="h-12 flex flex-row basis-10/12"
+                >
+                  <a href="/profile">
+                    <Avatar>
+                      <AvatarFallback className="text-xl">
+                        {user ? user.name[0].toUpperCase() : "?"}
+                        {user ? user.name[1] : "?"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="text-lg">{user ? user.name : "USER"}</p>
+                  </a>
+                </SidebarMenuButton>
+                <SidebarMenuButton
+                  className="basis-2/12"
+                  onClick={() => logout()}
+                >
+                  <FaArrowRightFromBracket size={36} color="red" />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarFooter>
+    </Sidebar>
   );
 }

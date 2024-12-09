@@ -56,8 +56,8 @@ export default function PageLayout() {
       <SidebarProvider >
         <DesktopNavigation user={fetchedUser} />
 
-        <main className="bg-gradient-to-br from-neutral-950 px-3 to-stone-900 min-h-screen w-11/12 ">
-          <SidebarTrigger className=" p-5 bg-emerald-500 rounded-full fixed bottom-4" />
+        <main className="bg-gradient-to-br mx-auto dark:from-neutral-950 from-neutral-50 px-3 dark:to-stone-900 to-stone-200 min-h-screen w-11/12 ">
+          <SidebarTrigger className=" p-5 ml-2 bg-emerald-500 rounded-full fixed bottom-4" />
           {isAuthenticated ? <Outlet context={{user: fetchedUser}} /> : <Navigate to="/authorize" />}
         </main>
         <footer></footer>
