@@ -11,7 +11,7 @@ export default function PageLayout() {
   const { isAuthenticated, loading, user } = useAuth();
   const [fetchedUser, setUser] = useState(null);
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && user !== null) {
 
       async function fetchUser() {
         try {

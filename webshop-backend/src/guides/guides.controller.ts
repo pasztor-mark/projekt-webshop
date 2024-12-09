@@ -33,6 +33,10 @@ export class GuidesController {
     return this.guidesService.findManyBySubject(subject as $Enums.Subject);
   }
 
+  @Get('copyOwner/:copyOwnerId')
+  findManyByCopyOwner(@Param('copyOwnerId') copyOwnerId: string) {
+    return this.guidesService.findManyByCopyOwner(+copyOwnerId);
+  }
   @Get('level/:level')
   findManyByLevel(@Param('level') level: string) {
     return this.guidesService.findManyByLevel(level as $Enums.Level);

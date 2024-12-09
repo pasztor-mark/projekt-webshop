@@ -41,6 +41,17 @@ export class GuidesService {
       }
     })
   }
+  async findManyByCopyOwner(copyOwnerId: number) {
+    return await this.db.guide.findMany({
+      where: {
+        orders: {
+          some: {
+            customerId: copyOwnerId
+          }
+        }
+      }
+  })
+}
   async findManyBySubject(subject: $Enums.Subject) {
     return await this.db.guide.findMany({
       where: {

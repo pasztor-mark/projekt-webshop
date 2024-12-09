@@ -1,19 +1,19 @@
 import { SubjectComponent } from "@/lib/componentGenerator";
-import { Lesson } from "../../../../shared/types";
+import { Guide } from "../../../../shared/types";
 
-export default function GuideTab({guide}: {guide: Gui}) {
-    const date = new Date(lesson.startTime)
+export default function GuideTab({guide}: {guide: Guide}) {
+    
     return (
         <>
-            <div className="w-full rounded-2xl hover:border-emerald-600 hover:bg-neutral-600 border border-white flex flex-row items-center justify-between p-3">
+            <div className="w-full rounded-2xl hover:border-emerald-600 mb-3 hover:bg-neutral-600 border border-white flex flex-row items-center justify-between p-3">
                 <span className="flex flex-row items-center gap-4">
-                    {SubjectComponent(lesson)}
-                    <p>{lesson.subject}</p>
+                    {SubjectComponent(guide)}
+                    <p>{guide.subject}</p>
                     </span>
                 
 
-                <b>{lesson.title}</b>
-                <time>{date.toLocaleString()}</time>
+                <b>{guide.title}</b>
+                
                 
                 
             </div>

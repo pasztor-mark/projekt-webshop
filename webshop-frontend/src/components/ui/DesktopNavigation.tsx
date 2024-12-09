@@ -51,7 +51,7 @@ export default function DesktopNavigation({ user } : {user: User | null}) {
       group: "Útmutatók",
       items: [
         {
-          label: "Tanulási útmutatók",
+          label: "Tananyagok",
           icon: <FaBookmark size={28} />,
           to: "/guides",
         },
