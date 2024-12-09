@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import * as yup from 'yup'
 import { useAuth } from "../AuthContext"
-import { useNavigate } from 'react-router';
+
 
 export default function RegisterForm() {
 
@@ -20,7 +20,7 @@ export default function RegisterForm() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
   const {login} = useAuth()
-  const navigate = useNavigate();
+  
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -32,7 +32,7 @@ export default function RegisterForm() {
       }
       const result = await res.json()
       login({ email: result.user.email, id: result.user.id })
-      navigate('/');
+      window.location.reload()
     }).catch((err) => {
       setError(err.message)
     })
@@ -80,7 +80,6 @@ export default function RegisterForm() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-
           />
         </div>
         <p className="text-red-500">{error}</p>

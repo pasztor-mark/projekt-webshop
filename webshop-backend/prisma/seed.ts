@@ -5,7 +5,7 @@ import { CreateUserDto } from '../src/users/dto/create-user.dto';
 import { CreateOrderDto } from '../src/orders/dto/create-order.dto';
 import { CreateLessonDto } from '../src/lessons/dto/create-lesson.dto';
 import { $Enums } from '@prisma/client';
-import { Level } from '../../shared/types';
+
 
 const prisma = new PrismaService();
 
@@ -33,6 +33,7 @@ const createGuides = async (count: number, authorIds: number[]) => {
       subject: faker.helpers.arrayElement(Object.values($Enums.Subject)),
       level: faker.helpers.arrayElement(Object.values($Enums.Level)),
       authorId: faker.helpers.arrayElement(authorIds),
+
     });
   }
   return await prisma.guide.createMany({ data: guides });
@@ -42,12 +43,17 @@ const createLessons = async (count: number, hostIds: number[], userIds: number[]
   const lessons: CreateLessonDto[] = [];
   for (let i = 0; i < count; i++) {
     const participantIds = faker.helpers.arrayElements(userIds, faker.number.int({ min: 1, max: 5 }));
+    const startDate = faker.date.soon()
+    const endDate = startDate
+    endDate.setHours(startDate.getHours() + 1)
+    
     lessons.push({
+      
       title: faker.lorem.words(3),
       description: faker.lorem.sentences(2),
       price: faker.number.int({ min: 0, max: 500000 }),
-      startTime: faker.date.future(),
-      endTime: faker.date.future(),
+      startTime: startDate,
+      endTime: endDate,
       subject: faker.helpers.arrayElement(Object.values($Enums.Subject)),
       level: faker.helpers.arrayElement(Object.values($Enums.Level)),
       hostId: faker.helpers.arrayElement(hostIds),

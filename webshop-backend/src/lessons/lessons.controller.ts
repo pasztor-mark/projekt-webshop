@@ -37,6 +37,10 @@ export class LessonsController {
   findManyBySubject(@Param('subject') subject: string) {
     return this.lessonsService.findManyBySubject(subject as $Enums.Subject);
   }
+  @Get('participant/:participantId')
+  findManyByParticipant(@Param('participantId') participantId: string) {
+    return this.lessonsService.findManyByParticipantId(+participantId)
+  }
 
   @Get('price-range')
   findManyByPriceRange(@Query('minPrice') minPrice: string, @Query('maxPrice') maxPrice: string) {

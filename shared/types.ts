@@ -31,4 +31,31 @@ export enum Subject {
     updatedAt?: string,
     createdAt?: string,
   }
+  export interface Lesson {
+    id?: number
+    title: string
+    description: string
+    price: number
+    subject: Subject
+    level: Level
+    startTime: string,
+    endTime: string
+    createdAt?: string
+    updatedAt?: string
+  }
+  export interface Guide {
+    id?: number
+    title: string
+    description: string
+    price: number
+    subject: Subject
+    level: Level
+    createdAt? : string
+    updatedAt?: string
+  }
+  export const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+  };
   

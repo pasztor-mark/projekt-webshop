@@ -80,7 +80,20 @@ export class LessonsService {
       },
     });
   }
-
+  async findManyByParticipantId(participantId: number) {
+    return await this.db.lesson.findMany({
+      where: {
+        participants: {
+          some: {
+            id: participantId
+          }
+        }
+      },
+      orderBy: {
+        startTime: 'asc'
+      }
+    })
+  }
   async findManyBySubject(subject: $Enums.Subject) {
     return await this.db.lesson.findMany({
       where: {

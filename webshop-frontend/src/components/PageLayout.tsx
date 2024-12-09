@@ -4,6 +4,7 @@ import { useAuth } from "./AuthContext";
 import DesktopNavigation from "./ui/DesktopNavigation";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { useEffect, useState } from "react";
+import { getCookie } from "../../../shared/types";
 
 
 export default function PageLayout() {
@@ -16,11 +17,6 @@ export default function PageLayout() {
         try {
           
           
-          const getCookie = (name: string) => {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop()?.split(';').shift();
-          };
 
           const token = getCookie('token');
           if (!token) {
@@ -57,10 +53,10 @@ export default function PageLayout() {
 
   return (
     <>
-      <SidebarProvider className="fixed">
+      <SidebarProvider >
         <DesktopNavigation user={fetchedUser} />
 
-        <main className="bg-gradient-to-br from-neutral-950 px-3 to-stone-900 min-h-screen min-w-full ">
+        <main className="bg-gradient-to-br from-neutral-950 px-3 to-stone-900 min-h-screen w-11/12 ">
           <SidebarTrigger className=" p-5 bg-emerald-500 rounded-full fixed bottom-4" />
           {isAuthenticated ? <Outlet context={{user: fetchedUser}} /> : <Navigate to="/authorize" />}
         </main>
