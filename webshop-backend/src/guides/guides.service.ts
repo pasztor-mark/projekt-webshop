@@ -23,7 +23,15 @@ export class GuidesService {
   async findAll() {
     return await this.db.guide.findMany();
   }
-
+  async findManyByIds(ids: number[]) {
+    return await this.db.guide.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
   async findGuideList(
     page: number,
     pageSize: number,

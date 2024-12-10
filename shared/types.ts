@@ -67,6 +67,10 @@ export enum Subject {
     author: User
     orders: Order[]
   }
+  export interface LessonWithHost extends Lesson {
+    host: User
+    orders: Order[]
+  }
   export const getCookie = (name: string) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

@@ -30,6 +30,10 @@ export class GuidesController {
     
     return await this.guidesService.findGuideList(+page, +pageSize, search, orderFactor, order, subjects);
   }
+  @Get('cart')
+  findManyByIds(@Query('ids') ids: string) {
+    return this.guidesService.findManyByIds(ids.split(',').map(id => +id));
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

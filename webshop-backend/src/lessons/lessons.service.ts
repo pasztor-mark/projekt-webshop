@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { $Enums } from '@prisma/client';
+import { Lesson } from '../../../shared/types';
 
 @Injectable()
 export class LessonsService {
@@ -68,9 +69,86 @@ export class LessonsService {
       return 'Hiba a résztvevők hozzáadásakor';
     }
   }
+  async findLessonList(
+    page: number,
+    pageSize: number,
+    search: string,
+    orderFactor: keyof Lesson,
+    order: 'asc' | 'desc',
+    subjects: $Enums.Subject[],
+  ) {
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+    const validSubjects = subjects.filter(subject => Object.values($Enums.Subject).includes(subject));
 
+    const lessons = await this.db.lesson.findMany({
+      skip,
+      take,
+      where: {
+        AND: [
+          {
+            OR: [
+              { title: { contains: search} },
+              { description: { contains: search } },
+              { host: { name: { contains: search} } },
+            ],
+          },
+          {
+            subject: {
+              in: validSubjects.length > 0 ? validSubjects : Object.values($Enums.Subject),
+            },
+          },
+        ],
+      },
+      orderBy: {
+        [orderFactor]: order,
+      },
+      include: {
+        host: true,
+        orders: true,
+      },
+    });
+
+    lessons.forEach((guide) => {
+      delete guide.host.password;
+      delete guide.host.email;
+    });
+
+    const totalLessons = await this.db.lesson.count({
+      where: {
+        AND: [
+          {
+            OR: [
+              { title: { contains: search } },
+              { description: { contains: search } },
+              { host: { name: { contains: search } } },
+            ],
+          },
+          {
+            subject: {
+              in: validSubjects.length > 0 ? validSubjects : Object.values($Enums.Subject),
+            },
+          },
+        ],
+      },
+    });
+
+    return {
+      lessons,
+      totalPages: Math.ceil(totalLessons / pageSize),
+    };
+  }
   async findAll() {
     return await this.db.lesson.findMany();
+  }
+  async findManyByIds(ids: number[]) {
+    return await this.db.lesson.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
   }
 
   async findManyByHostId(hostId: number) {

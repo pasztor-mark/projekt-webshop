@@ -15,6 +15,7 @@ import {
 import GuideCard from "@/components/Listing/GuideCard";
 import { useOutletContext } from "react-router";
 import SubjectSelector from "@/components/Listing/SubjectSelector";
+import Cart from "@/components/Listing/Cart";
 
 export default function Guides() {
   const [search, setSearch] = useState<string>("");
@@ -41,6 +42,10 @@ export default function Guides() {
     orderFactor: string;
     order: "asc" | "desc";
   }>({ orderFactor: "id", order: "asc" });
+  const [guideCart, setGuideCart] = useState<number[]>(() => {
+    const savedCart = localStorage.getItem('guideCart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   useEffect(() => {
     
     async function fetchGuideList() {
@@ -67,7 +72,31 @@ export default function Guides() {
     }
     fetchGuideList();
   }, [orderFactor, page, search, pageSize, selectedSubjects]);
+  const [lessonCart, setLessonCart] = useState<number[]>(() => {
+    const savedCart = localStorage.getItem('lessonCart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
+  useEffect(() => {
+    localStorage.setItem('guideCart', JSON.stringify(guideCart));
+  }, [guideCart]);
+
+  useEffect(() => {
+    localStorage.setItem('lessonCart', JSON.stringify(lessonCart));
+  }, [lessonCart]);
+
+  const addToGuideCart = (id: number) => {
+    setGuideCart((prevCart) => [...prevCart, id]);
+  };
+
+  const removeFromGuideCart = (id: number) => {
+    setGuideCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
+  };
+
+
+  const removeFromLessonCart = (id: number) => {
+    setLessonCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
+  };
 
   return (
     <section>
@@ -97,7 +126,12 @@ export default function Guides() {
         subject={subject}
         onClick={() => {
           if (selectedSubjects.includes(subject)) {
-            
+    <Cart 
+      guideCart={guideCart} 
+      removeFromGuideCart={removeFromGuideCart} 
+      lessonCart={lessonCart} 
+      removeFromLessonCart={(id: number) => setLessonCart((prevCart) => prevCart.filter((itemId) => itemId !== id))} 
+    />
             setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
           } else {
             setSelectedSubjects([...selectedSubjects, subject]);
@@ -106,11 +140,12 @@ export default function Guides() {
         selected={selectedSubjects.includes(subject)}
       />
     ))}
+    <Cart guideCart={guideCart} removeFromGuideCart={removeFromGuideCart} lessonCart={lessonCart} removeFromLessonCart={removeFromLessonCart}  />
       </div>
     <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
       {guides && guides.length > 0 ? (
         guides.map((guide) => (
-        <GuideCard key={guide.id} guide={guide} user={user} />
+        <GuideCard key={guide.id} guide={guide} user={user} addToGuideCart={addToGuideCart} guideCart={guideCart} removeFromGuideCart={removeFromGuideCart} />
         ))
       ) : (
         <div className="bg-stone-300 dark:bg-neutral-800 p-4 rounded-3xl flex flex-col gap-2 col-span-full row-span-full">

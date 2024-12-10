@@ -6,6 +6,7 @@ import { AuthProvider } from "./components/AuthContext";
 import Home from "./pages/Home";
 import Profile from "./pages/user/Profile";
 import Guides from "./pages/guides/guides";
+import Lessons from "./pages/lessons/lessons";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<PageLayout />}>
               <Route index element={<Home/>} />
               <Route path="guides" element={<Guides/>} />
+              <Route path="lessons" element={<Lessons/>} />
               <Route path="user/:userId" element={<Profile/>} />
             </Route>
           </Routes>

@@ -3,6 +3,7 @@ import { LessonsService } from './lessons.service';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { UpdateLessonDto } from './dto/update-lesson.dto';
 import { $Enums } from '@prisma/client';
+import { Lesson } from '../../../shared/types';
 
 @Controller('lessons')
 export class LessonsController {
@@ -22,11 +23,27 @@ export class LessonsController {
   findAll() {
     return this.lessonsService.findAll();
   }
-
+  @Get("list")
+  async findLessonList(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 8,
+    @Query('search') search: string = '',
+    @Query('orderFactor') orderFactor: keyof Lesson = 'id',
+    @Query('order') order: 'asc' | 'desc' = 'asc',
+    @Query('subjects') subjects: $Enums.Subject[] = Object.values($Enums.Subject)
+  ) {
+    
+    return await this.lessonsService.findLessonList(+page, +pageSize, search, orderFactor, order, subjects);
+  }
+  @Get('cart')
+  findManyByIds(@Query('ids') ids: string) {
+    return this.lessonsService.findManyByIds(ids.split(',').map(id => +id));
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.lessonsService.findOne(+id);
   }
+
 
   @Get('host/:hostId')
   findManyByHostId(@Param('hostId') hostId: string) {
