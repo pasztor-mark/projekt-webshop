@@ -24,9 +24,11 @@ export class GuidesController {
     @Query('pageSize') pageSize: number = 8,
     @Query('search') search: string = '',
     @Query('orderFactor') orderFactor: keyof Guide = 'id',
-    @Query('order') order: 'asc' | 'desc' = 'asc'
+    @Query('order') order: 'asc' | 'desc' = 'asc',
+    @Query('subjects') subjects: $Enums.Subject[] = Object.values($Enums.Subject)
   ) {
-    return await this.guidesService.findGuideList(+page, +pageSize, search, orderFactor, order);
+    
+    return await this.guidesService.findGuideList(+page, +pageSize, search, orderFactor, order, subjects);
   }
 
   @Get(':id')

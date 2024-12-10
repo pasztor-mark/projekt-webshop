@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { $Enums, Guide } from '@prisma/client';
 import { CreateGuideDto } from './dto/create-guide.dto';
 import { UpdateGuideDto } from './dto/update-guide.dto';
+import { Subject } from '../../../shared/types';
 
 @Injectable()
 export class GuidesService {
@@ -29,18 +30,31 @@ export class GuidesService {
     search: string,
     orderFactor: keyof Guide,
     order: 'asc' | 'desc',
+    subjects: $Enums.Subject[],
   ) {
     const skip = (page - 1) * pageSize;
     const take = pageSize;
 
+    
+    const validSubjects = subjects.filter(subject => Object.values($Enums.Subject).includes(subject));
+
     const guides = await this.db.guide.findMany({
-      skip: skip,
+      skip,
       take,
       where: {
-        OR: [
-          { title: { contains: search } },
-          { description: { contains: search } },
-          { author: { name: { contains: search } } },
+        AND: [
+          {
+            OR: [
+              { title: { contains: search} },
+              { description: { contains: search } },
+              { author: { name: { contains: search} } },
+            ],
+          },
+          {
+            subject: {
+              in: validSubjects.length > 0 ? validSubjects : Object.values($Enums.Subject),
+            },
+          },
         ],
       },
       orderBy: {
@@ -55,10 +69,31 @@ export class GuidesService {
     guides.forEach((guide) => {
       delete guide.author.password;
       delete guide.author.email;
-      
     });
-    
-    return { guides, totalPages: Math.ceil((await this.db.guide.count()) / pageSize)}
+
+    const totalGuides = await this.db.guide.count({
+      where: {
+        AND: [
+          {
+            OR: [
+              { title: { contains: search } },
+              { description: { contains: search } },
+              { author: { name: { contains: search } } },
+            ],
+          },
+          {
+            subject: {
+              in: validSubjects.length > 0 ? validSubjects : Object.values($Enums.Subject),
+            },
+          },
+        ],
+      },
+    });
+
+    return {
+      guides,
+      totalPages: Math.ceil(totalGuides / pageSize),
+    };
   }
 
   async findManyByAuthorId(authorId: number) {
@@ -100,7 +135,7 @@ export class GuidesService {
   async findOne(id: number) {
     return await this.db.guide.findFirstOrThrow({
       where: {
-        id
+        id,
       },
     });
   }
@@ -119,9 +154,9 @@ export class GuidesService {
   async remove(id: number) {
     await this.db.guide.delete({
       where: {
-        id
+        id,
       },
     });
-    return ` #${id} útmutató törölve`;
+    return `#${id} útmutató törölve`;
   }
 }

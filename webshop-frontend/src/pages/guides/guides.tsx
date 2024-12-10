@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
     PaginationNext,
@@ -18,31 +17,37 @@ import { useOutletContext } from "react-router";
 import SubjectSelector from "@/components/Listing/SubjectSelector";
 
 export default function Guides() {
-  
-  const [page, setPage] = useState(1);
-  const [pageSize] = useState(8);
-  const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState<string>("");
   const guideAttributes = Object.keys({
     id: 0,
     title: "",
     description: "",
     author: "",
   }) as (keyof Guide)[];
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(8);
+  const subjects = Object.values(Subject);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>(subjects);
+
   function handleOrderChange(factor: string, order: "asc" | "desc") {
     setOrderFactor({ orderFactor: factor, order });
     
   }
   const {user}: {user: User} = useOutletContext()
-  const [search, setSearch] = useState<string>("");
+  
   const [guides, setGuides] = useState<GuideWithAuthor[] | null>(null);
   const [orderFactor, setOrderFactor] = useState<{
     orderFactor: string;
     order: "asc" | "desc";
   }>({ orderFactor: "id", order: "asc" });
   useEffect(() => {
+    
     async function fetchGuideList() {
       const token = getCookie("token");
-      const res = await fetch(`http://localhost:3000/guides/list?page=${page}&pageSize=${pageSize}&search=${search}&orderFactor=${orderFactor.orderFactor}&order=${orderFactor.order}`, {
+      const subjectQuery = selectedSubjects.map(subject => `subjects=${subject}`).join('&');
+      
+      const res = await fetch(`http://localhost:3000/guides/list?page=${page}&pageSize=${pageSize}&search=${search}&orderFactor=${orderFactor.orderFactor}&order=${orderFactor.order}&${subjectQuery}`, {
         method: "GET",
         credentials: "include",
         mode: "cors",
@@ -53,7 +58,7 @@ export default function Guides() {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log(data);
+        
         setGuides(data.guides);
         setTotalPages(data.totalPages)
       } else {
@@ -61,7 +66,8 @@ export default function Guides() {
       }
     }
     fetchGuideList();
-  }, [page, pageSize, search, orderFactor]);
+  }, [orderFactor, page, search, pageSize, selectedSubjects]);
+
 
   return (
     <section>
@@ -80,12 +86,25 @@ export default function Guides() {
           />
         </span>
         <hr className="dark:border-white border h-7" />
-        {guideAttributes.map((attr) => (
+        {
+        guideAttributes.map((attr) => (
           <OrderSelector key={attr} text={attr} onChange={handleOrderChange} />
-        ))}
-        {}
-    {Object.values(Subject).map((subject) => (
-        <SubjectSelector key={subject} subject={subject} />
+        ))
+        } 
+    {subjects.map((subject) => (
+      <SubjectSelector
+        key={subject}
+        subject={subject}
+        onClick={() => {
+          if (selectedSubjects.includes(subject)) {
+            
+            setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
+          } else {
+            setSelectedSubjects([...selectedSubjects, subject]);
+          }
+        }}
+        selected={selectedSubjects.includes(subject)}
+      />
     ))}
       </div>
     <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
@@ -103,7 +122,7 @@ export default function Guides() {
       <div className="lg:fixed my-5 lg:left-1/2 bottom-6 bg-neutral-300 dark:bg-stone-500 rounded-xl">
       <Pagination>
             <PaginationContent>
-              <PaginationItem>
+              <PaginationItem className="">
                 <PaginationPrevious onClick={() => setPage((prev) => Math.max(prev - 1, 1))}  />
               </PaginationItem>
               {Array.from({ length: totalPages }, (_, index) => (

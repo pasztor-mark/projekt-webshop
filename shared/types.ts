@@ -4,7 +4,7 @@ export enum Subject {
     Physics = 'Physics',
     Chemistry = 'Chemistry',
     Compsci = 'Compsci',
-    Foreign = 'Foreign Languages',
+    Languages = 'Languages',
     History = 'History',
     Economics = 'Economics',
     Art = 'Art',

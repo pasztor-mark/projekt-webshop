@@ -1,28 +1,28 @@
 import { FaBoltLightning, FaBookAtlas, FaCalculator, FaChartLine, FaCircleQuestion, FaClockRotateLeft, FaCode, FaFire, FaGlobe, FaPaintbrush } from "react-icons/fa6";
 import { Subject } from "../../../shared/types";
-export const SubjectComponent = ({ subject }: { subject: Subject }) => {
+export const SubjectComponent = ({ subject, size = 32 }: { subject: Subject, size?: number }) => {
     const renderSubjectContent = (): JSX.Element => {
         switch (subject) {
             case Subject.Maths:
-                return <FaCalculator size={32} />;
+                return <FaCalculator size={size} />;
             case Subject.English:
-                return <FaBookAtlas size={32} />;
+                return <FaBookAtlas size={size} />;
             case Subject.Physics:
-                return <FaBoltLightning size={32} />;
+                return <FaBoltLightning size={size} />;
             case Subject.Chemistry:
-                return <FaFire size={32} />;
+                return <FaFire size={size} />;
             case Subject.Compsci:
-                return <FaCode size={32} />;
-            case Subject.Foreign:
-                return <FaGlobe size={32} />;
+                return <FaCode size={size} />;
+            case Subject.Languages:
+                return <FaGlobe size={size} />;
             case Subject.History:
-                return <FaClockRotateLeft size={32} />;
+                return <FaClockRotateLeft size={size} />;
             case Subject.Economics:
-                return <FaChartLine size={32} />;
+                return <FaChartLine size={size} />;
                 case Subject.Art:
-                    return <FaPaintbrush size={32} />;
+                    return <FaPaintbrush size={size} />;
             default:
-                return <FaCircleQuestion size={32}/>;
+                return <FaCircleQuestion size={size}/>;
         }
     };
 
