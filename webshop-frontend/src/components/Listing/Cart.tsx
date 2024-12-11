@@ -15,22 +15,29 @@ import {
   getCookie,
   GuideWithAuthor,
   LessonWithHost,
+  User,
 } from "../../../../shared/types";
 import { useEffect, useState } from "react";
 import CartItem from "./CartItem";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import Payment from "../Payment/Payment";
+
 
 export default function Cart({
   lessonCart,
   removeFromLessonCart,
   guideCart,
   removeFromGuideCart,
+  user
 }: {
   lessonCart: number[];
   removeFromLessonCart: (id: number) => void;
   guideCart: number[];
   removeFromGuideCart: (id: number) => void;
+  user: User
 }) {
   const [lessons, setLessons] = useState<LessonWithHost[]>([]);
+  
   const lessonSubtotal = lessons.reduce((acc, lesson) => acc + lesson.price, 0);
   const [guides, setGuides] = useState<GuideWithAuthor[]>([]);
   const guideSubtotal = guides.reduce((acc, guide) => acc + guide.price, 0);
@@ -110,13 +117,13 @@ export default function Cart({
               <p className="text-xl font-semibold">{lessonSubtotal} Ft</p>
             </div>
             {
-            guides.map((guide: GuideWithAuthor) => (
-              <CartItem
-                key={guide.id}
-                guide={guide}
-                onRemove={() => removeFromGuideCart(guide.id!)}
-              />
-            ))
+              guides.map((guide: GuideWithAuthor) => (
+                <CartItem
+                  key={guide.id}
+                  guide={guide}
+                  onRemove={() => removeFromGuideCart(guide.id!)}
+                />
+              ))
             }
             <div className="border-y border-neutral-600 py-3 flex justify-between">
               <p className="text-lg">Tananyag részösszeg:</p>
@@ -125,12 +132,18 @@ export default function Cart({
           </div>
         </DrawerHeader>
         <DrawerFooter>
-            <p className="text-lg text-center">Teljes összeg: <b>{guideSubtotal + lessonSubtotal} Ft</b></p>
-            <p className="text-sm text-right">Az ár tartalmazza az ÁFÁ-t.</p>
-          <Button className="bg-emerald-500">
-            <FaCheckDouble />
-            Fizetés
-          </Button>
+          <p className="text-lg text-center">Teljes összeg: <b>{guideSubtotal + lessonSubtotal} Ft</b></p>
+          <p className="text-sm text-right">Az ár tartalmazza az ÁFÁ-t.</p>
+          <Dialog>
+            <DialogTrigger asChild>
+
+              <Button className="bg-emerald-500" >
+                <FaCheckDouble />
+                Fizetés
+              </Button>
+            </DialogTrigger>
+            <Payment user={user} guideCart={guideCart} lessonCart={lessonCart} totalPrice={guideSubtotal + lessonSubtotal}/>
+          </Dialog>
           <DrawerClose>
             <Button variant="ghost">Vissza</Button>
           </DrawerClose>

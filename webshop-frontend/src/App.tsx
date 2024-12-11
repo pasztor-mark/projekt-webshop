@@ -9,6 +9,7 @@ import Guides from "./pages/guides/guides";
 import Lessons from "./pages/lessons/lessons";
 
 
+
 function App() {
   return (
     <ThemeProvider>
@@ -21,6 +22,7 @@ function App() {
               <Route path="guides" element={<Guides/>} />
               <Route path="lessons" element={<Lessons/>} />
               <Route path="user/:userId" element={<Profile/>} />
+              
             </Route>
           </Routes>
         </BrowserRouter>

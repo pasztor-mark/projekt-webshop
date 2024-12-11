@@ -123,7 +123,7 @@ export default function Lessons() {
       </div>
       <div className="flex lg:justify-between lg:flex-row flex-col lg:items-center gap-4">
         <span className="flex items-center gap-4">
-          <span>
+          <span className="flex items-center gap-4">
             <FaMagnifyingGlass size={24} />
             <Input
               onChange={(e) => setSearch(e.currentTarget.value)}
@@ -131,37 +131,43 @@ export default function Lessons() {
             />
           </span>
           <hr className="dark:border-white border h-7" />
+          <span className="flex flex-row gap-2">
 
           {guideAttributes.map((attr) => (
             <OrderSelector
-              key={attr}
+            key={attr}
               text={attr}
               onChange={handleOrderChange}
             />
           ))}
+            </span>
+            <span className="flex flex-row gap-2">
+
 
           {subjects.map((subject) => (
             <SubjectSelector
-              key={subject}
-              subject={subject}
-              onClick={() => {
-                if (selectedSubjects.includes(subject)) {
-                  setSelectedSubjects(
-                    selectedSubjects.filter((s) => s !== subject)
+            key={subject}
+            subject={subject}
+            onClick={() => {
+              if (selectedSubjects.includes(subject)) {
+                setSelectedSubjects(
+                  selectedSubjects.filter((s) => s !== subject)
                   );
                 } else {
                   setSelectedSubjects([...selectedSubjects, subject]);
                 }
               }}
               selected={selectedSubjects.includes(subject)}
-            />
-          ))}
+              />
+            ))}
+            </span>
         </span>
         <Cart
           lessonCart={lessonCart}
           guideCart={guideCart}
           removeFromLessonCart={removeFromLessonCart}
           removeFromGuideCart={removeFromGuideCart}
+          user={user}
         />
       </div>
       <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">

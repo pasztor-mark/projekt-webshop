@@ -22,11 +22,15 @@ export class OrdersController {
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(+id);
   }
-
+  @Get('customer/:customerId/pending')
+  findPendingByCustomerId(@Param('customerId') customerId: string) {
+    return this.ordersService.findPendingByCustomerId(+customerId);
+  }
   @Get('customer/:customerId')
   findAllByCustomerId(@Param('customerId') customerId: string) {
     return this.ordersService.findAllByCustomerId(+customerId);
   }
+  
 
   @Get('guide/:guideId')
   findAllByGuideId(@Param('guideId') guideId: string) {

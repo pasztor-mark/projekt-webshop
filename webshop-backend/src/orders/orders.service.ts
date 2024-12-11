@@ -11,26 +11,31 @@ export class OrdersService {
     this.db = db;
   }
   async create(createOrderDto: CreateOrderDto) {
-    await this.db.order.create({
+    console.log(createOrderDto);
+    return await this.db.order.create({
       data: {
         totalPrice: createOrderDto.totalPrice,
-        status: 'Pending',
+        status: createOrderDto.status,
         customerId: createOrderDto.customerId,
         guides: {
-          connect: createOrderDto.guideIds.map((id) => ({ id })),
+          connect: Array.isArray(createOrderDto.guideIds) ? createOrderDto.guideIds.map((id) => ({ id })) : [],
         },
         lessons: {
-          connect: createOrderDto.lessonIds.map((id) => ({ id })),
+          connect: Array.isArray(createOrderDto.lessonIds) ? createOrderDto.lessonIds.map((id) => ({ id })) : [],
         },
       },
     });
   }
-
   async findAll() {
     return await this.db.order.findMany();
   }
   async findAllByCustomerId(customerId: number) {
     return await this.db.order.findMany({ where: { id: customerId } });
+  }
+  async findPendingByCustomerId(customerId: number) {
+    return await this.db.order.findMany({
+      where: { customerId, status: 'Pending' },
+    });
   }
   async findAllByGuideId(guideId: number) {
     return await this.db.order.findMany({ where: { id: guideId } });
@@ -56,12 +61,6 @@ export class OrdersService {
         totalPrice: updateOrderDto.totalPrice,
         status: updateOrderDto.status,
         customerId: updateOrderDto.customerId,
-        guides: {
-          set: updateOrderDto.guideIds.map((id) => ({ id })),
-        },
-        lessons: {
-          set: updateOrderDto.lessonIds.map((id) => ({ id })),
-        },
       },
     });
     return `${id} rendelés adatai frissítve`;
