@@ -1,22 +1,32 @@
 import { useEffect, useState } from "react";
-import { getCookie, User } from "@/../../shared/types";
+import {
+  getCookie,
+  GuideWithAuthor,
+  LessonWithHost,
+  User,
+} from "@/../../shared/types";
 
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { DialogClose, DialogContent } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { FaCheckDouble } from "react-icons/fa6";
+import CartItem from "../Listing/CartItem";
 
 export default function Payment({
   user,
   guideCart,
   lessonCart,
   totalPrice,
+  lessons = [],
+  guides = [],
+  
 }: {
   user: User;
   guideCart: number[];
   lessonCart: number[];
   totalPrice: number;
+  lessons?: LessonWithHost[];
+  guides?: GuideWithAuthor[];
+  
 }) {
-  const [dialogState, setDialogState] = useState(true);
   const [pendingPayment, setPendingPayment] = useState<{
     id: number;
     totalPrice: number;
@@ -24,25 +34,25 @@ export default function Payment({
   } | null>(null);
   async function updateStatus(id: number) {
     const token = getCookie("token");
-    console.log(id)
+    console.log(id);
     const res = await fetch(`http://localhost:3000/orders/${id}/status`, {
       method: "PATCH",
       credentials: "include",
       mode: "cors",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        status: "Paid"
-      })
+        status: "Paid",
+      }),
     });
     if (res.ok) {
-      setDialogState(false);
       localStorage.removeItem("guideCart");
       localStorage.removeItem("lessonCart");
+      window.location.reload();
     } else {
-      console.log(res.text)
+      console.log(res.text);
       throw new Error("Failed to update payment status");
     }
   }
@@ -67,10 +77,8 @@ export default function Payment({
 
       const data = await res.json();
       if (data[0] && data[0].status === "Paid") {
-        
         setPendingPayment(data[0]);
       } else {
-        
         createNewPayment();
       }
     }
@@ -108,37 +116,48 @@ export default function Payment({
   }, [user, guideCart, lessonCart, totalPrice]);
 
   return (
-    <Dialog open={dialogState}>
-      <DialogTrigger asChild>
-        <Button className="bg-emerald-500">
-          <FaCheckDouble />
-          Fizetés
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <section className="flex flex-row justify-between">
-          <div className="flex flex-col">
-            {pendingPayment ? (
-              <div>
-                <h2>Pending Payment #{pendingPayment.id}</h2>
-                <p>Total Price: {pendingPayment.totalPrice}</p>
-                <p>Status: {pendingPayment.status}</p>
-                <Button
-                  onClick={() => {
-                    updateStatus(pendingPayment.id);
-                  }}
-                  className="bg-emerald-500"
-                >
-                  Fizetés
-                </Button>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )}
-          </div>
-          <DialogClose onClick={() => setDialogState(false)}/>
-        </section>
-      </DialogContent>
-    </Dialog>
+    <DialogContent>
+      <section className="flex flex-row justify-between mx-auto">
+        <div className="flex flex-col gap-5">
+          
+          {pendingPayment ? (
+            lessons.map((lesson: LessonWithHost) => (
+              <CartItem
+                key={lesson.id}
+                lesson={lesson}
+                display
+                onRemove={() => {}}
+              />
+            ))
+          ) : (
+            <p>Nincs tanóra a kosarában.</p>
+          )}
+          {pendingPayment ? (
+            guides.map((guide: GuideWithAuthor) => (
+              <CartItem
+                key={guide.id}
+                guide={guide}
+                display
+                onRemove={() => {}}
+              />
+            ))
+          ) : (
+            <p>Nincs tanóra a kosarában.</p>
+          )}
+          <p className="text-xl">Összesen: <b>{totalPrice}</b> Ft</p>
+          {pendingPayment && (
+            <Button
+              onClick={() => {
+                updateStatus(pendingPayment.id);
+              }}
+              className="bg-emerald-500"
+            >
+              Fizetés
+            </Button>
+          )}
+        <DialogClose onClick={() => window.location.reload()}>Vissza</DialogClose>
+        </div>
+      </section>
+    </DialogContent>
   );
 }

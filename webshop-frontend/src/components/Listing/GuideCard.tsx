@@ -25,7 +25,7 @@ export default function GuideCard({
     setIsInCart(guideCart.includes(guide.id!));
   }, [guideCart, guide.id]);
 
-  const isPurchased = guide.orders.some((order) => order.customerId === user.id);
+  const isPurchased = guide.orders.some((order) => order.customerId === user.id && order.status === "Paid");
   const isAuthor = guide.author.id === user.id;
 
   return (
