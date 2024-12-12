@@ -15,10 +15,10 @@ export class AuthService {
     const user = await this.usersService.findUserByEmail(email);
     if (user && await bcrypt.compare(password, user.password)) {
       const { password, ...result } = user;
-      console.log('valid');
+      
       return result;
     }
-    console.log('invalid');
+    
     return null;
   }
 

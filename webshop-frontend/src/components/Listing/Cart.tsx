@@ -1,4 +1,4 @@
-import { FaBasketShopping, FaCheckDouble } from "react-icons/fa6";
+import { FaBasketShopping } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import {
   Drawer,
@@ -19,7 +19,7 @@ import {
 } from "../../../../shared/types";
 import { useEffect, useState } from "react";
 import CartItem from "./CartItem";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+
 import Payment from "../Payment/Payment";
 
 
@@ -134,16 +134,9 @@ export default function Cart({
         <DrawerFooter>
           <p className="text-lg text-center">Teljes összeg: <b>{guideSubtotal + lessonSubtotal} Ft</b></p>
           <p className="text-sm text-right">Az ár tartalmazza az ÁFÁ-t.</p>
-          <Dialog>
-            <DialogTrigger asChild>
 
-              <Button className="bg-emerald-500" >
-                <FaCheckDouble />
-                Fizetés
-              </Button>
-            </DialogTrigger>
             <Payment user={user} guideCart={guideCart} lessonCart={lessonCart} totalPrice={guideSubtotal + lessonSubtotal}/>
-          </Dialog>
+
           <DrawerClose>
             <Button variant="ghost">Vissza</Button>
           </DrawerClose>

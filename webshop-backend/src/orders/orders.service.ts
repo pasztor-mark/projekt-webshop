@@ -11,7 +11,7 @@ export class OrdersService {
     this.db = db;
   }
   async create(createOrderDto: CreateOrderDto) {
-    console.log(createOrderDto);
+    
     return await this.db.order.create({
       data: {
         totalPrice: createOrderDto.totalPrice,
