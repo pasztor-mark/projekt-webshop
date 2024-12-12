@@ -106,70 +106,80 @@ export default function Guides() {
           Böngészd a tananyagok széles választékát, és bővítsd a tudásod!
         </p>
       </div>
-      <div className="flex lg:flex-row flex-col lg:items-center gap-4">
-        <span className="flex items-center gap-4">
+      <div className="flex lg:justify-between lg:flex-row flex-col lg:items-center gap-4">
+        <span className="flex flex-row items-center gap-4">
           <FaMagnifyingGlass size={24} />
           <Input
             onChange={(e) => setSearch(e.currentTarget.value)}
             placeholder="Keresés"
           />
-        </span>
         <hr className="dark:border-white border h-7" />
-        {
-        guideAttributes.map((attr) => (
+        </span>
+        <span className="flex flex-row gap-4 flex-1">
+
+        {guideAttributes.map((attr) => (
           <OrderSelector key={attr} text={attr} onChange={handleOrderChange} />
-        ))
-        } 
-    {subjects.map((subject) => (
-      <SubjectSelector
-        key={subject}
-        subject={subject}
-        onClick={() => {
-          if (selectedSubjects.includes(subject)) {
-    <Cart 
-      guideCart={guideCart} 
-      removeFromGuideCart={removeFromGuideCart} 
-      lessonCart={lessonCart} 
-      removeFromLessonCart={(id: number) => setLessonCart((prevCart) => prevCart.filter((itemId) => itemId !== id))} 
-    />
-            setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
-          } else {
-            setSelectedSubjects([...selectedSubjects, subject]);
-          }
-        }}
-        selected={selectedSubjects.includes(subject)}
-      />
-    ))}
-    <Cart guideCart={guideCart} removeFromGuideCart={removeFromGuideCart} lessonCart={lessonCart} removeFromLessonCart={removeFromLessonCart}  />
+        ))}
+        <span className="flex flex-row gap-2">
+        {subjects.map((subject) => (
+          <SubjectSelector
+            key={subject}
+            subject={subject}
+            onClick={() => {
+              if (selectedSubjects.includes(subject)) {
+                setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
+              } else {
+                setSelectedSubjects([...selectedSubjects, subject]);
+              }
+            }}
+            selected={selectedSubjects.includes(subject)}
+            />
+          ))}
+          </span>
+          </span>
+        <Cart
+          guideCart={guideCart}
+          removeFromGuideCart={removeFromGuideCart}
+          lessonCart={lessonCart}
+          removeFromLessonCart={removeFromLessonCart}
+          user={user}
+        />
       </div>
-    <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
-      {guides && guides.length > 0 ? (
-        guides.map((guide) => (
-        <GuideCard key={guide.id} guide={guide} user={user} addToGuideCart={addToGuideCart} guideCart={guideCart} removeFromGuideCart={removeFromGuideCart} />
-        ))
-      ) : (
-        <div className="bg-stone-300 dark:bg-neutral-800 p-4 rounded-3xl flex flex-col gap-2 col-span-full row-span-full">
-        <h3>Nincs találat</h3>
-        <p>Próbálj meg egy másik keresést!</p>
-        </div>
-      )}
-    </div>
+      <div className="mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
+        {guides && guides.length > 0 ? (
+          guides.map((guide) => (
+            <GuideCard
+              key={guide.id}
+              guide={guide}
+              user={user}
+              addToGuideCart={addToGuideCart}
+              guideCart={guideCart}
+              removeFromGuideCart={removeFromGuideCart}
+            />
+          ))
+        ) : (
+          <div className="bg-stone-300 dark:bg-neutral-800 p-4 rounded-3xl flex flex-col gap-2 col-span-full row-span-full">
+            <h3>Nincs találat</h3>
+            <p>Próbálj meg egy másik keresést!</p>
+          </div>
+        )}
+      </div>
       <div className="lg:fixed my-5 lg:left-1/2 bottom-6 bg-neutral-300 dark:bg-stone-500 rounded-xl">
-      <Pagination>
-            <PaginationContent>
-              <PaginationItem className="">
-                <PaginationPrevious onClick={() => setPage((prev) => Math.max(prev - 1, 1))}  />
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem className="">
+              <PaginationPrevious onClick={() => setPage((prev) => Math.max(prev - 1, 1))} />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
               </PaginationItem>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}  />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+            ))}
+            <PaginationItem>
+              <PaginationNext onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </section>
   );

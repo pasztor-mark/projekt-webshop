@@ -8,11 +8,13 @@ export default function ThemeToggle() {
     <button
       className="w-10 h-10 bg-emerald-500 items-center flex justify-center rounded-full p-2"
       onClick={() => {
+        
         if (theme === "dark") {
           setTheme("light");
+          console.log("light");
         } else if (theme === "light") {
           setTheme("dark");
-        } else setTheme("system");
+        } else setTheme("dark")
       }}
     >
         {

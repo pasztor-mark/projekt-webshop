@@ -10,13 +10,15 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService
   ) {}
-
+  //semmi közöm az aszinkron programozáshoz
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findUserByEmail(email);
-    if (user && bcrypt.compare(password, user.password)) {
+    if (user && await bcrypt.compare(password, user.password)) {
       const { password, ...result } = user;
+      
       return result;
     }
+    
     return null;
   }
 

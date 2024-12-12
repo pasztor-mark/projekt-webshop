@@ -3,7 +3,7 @@ import {GuideWithAuthor, LessonWithHost } from "../../../../shared/types";
 import { SubjectComponent } from "@/lib/componentGenerator";
 import { Button } from "../ui/button";
 
-export default function CartItem({lesson, guide, onRemove}: {lesson?: LessonWithHost, guide?: GuideWithAuthor, onRemove?: () => void}) {
+export default function CartItem({lesson, guide, onRemove, display = false}: {lesson?: LessonWithHost, guide?: GuideWithAuthor, onRemove?: () => void, display?: boolean}) {
 
    return (
         <div className="flex justify-between items-center">
@@ -20,7 +20,10 @@ export default function CartItem({lesson, guide, onRemove}: {lesson?: LessonWith
         </span>
         <span className="flex items-center">
             <p>{lesson ? lesson.price : guide?.price} Ft</p>
-            <Button  variant={"destructive"} onClick={onRemove} className="ml-4 w-8 h-8"><FaX/></Button>
+            {
+                !display &&
+                <Button  variant={"destructive"} onClick={onRemove} className="ml-4 w-8 h-8"><FaX/></Button>
+            }
         </span>
         </div>
     )
