@@ -70,12 +70,12 @@ export default function Profile() {
   const { user }: { user: User } = useOutletContext();
   useEffect(() => {
     async function getProfile() {
-      const token = getCookie("token");
+      
 
-      if (token && userId) {
-        const req = await fetchProfile(token, +userId!);
+      
+        const req = await fetchProfile(+userId!);
         setUser(req);
-      } else throw new Error("Token or user not found");
+      
     }
     getProfile();
   }, []);

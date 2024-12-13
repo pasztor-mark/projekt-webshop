@@ -1,17 +1,17 @@
 import OrderSelector from "@/components/Listing/OrderSelector";
 import { Input } from "@/components/ui/input";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { getCookie, Guide, GuideWithAuthor, Subject, User } from "@/../../shared/types";
+import { Guide, GuideWithAuthor, Subject, User } from "@/../../shared/types";
 import { useEffect, useState } from "react";
 
 import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-  } from "@/components/ui/pagination"
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import GuideCard from "@/components/Listing/GuideCard";
 import { useOutletContext } from "react-router";
 import SubjectSelector from "@/components/Listing/SubjectSelector";
@@ -33,39 +33,40 @@ export default function Guides() {
 
   function handleOrderChange(factor: string, order: "asc" | "desc") {
     setOrderFactor({ orderFactor: factor, order });
-    
   }
-  const {user}: {user: User} = useOutletContext()
-  
+  const { user }: { user: User } = useOutletContext();
+
   const [guides, setGuides] = useState<GuideWithAuthor[] | null>(null);
   const [orderFactor, setOrderFactor] = useState<{
     orderFactor: string;
     order: "asc" | "desc";
   }>({ orderFactor: "id", order: "asc" });
   const [guideCart, setGuideCart] = useState<number[]>(() => {
-    const savedCart = localStorage.getItem('guideCart');
+    const savedCart = localStorage.getItem("guideCart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
   useEffect(() => {
-    
     async function fetchGuideList() {
-      const token = getCookie("token");
-      const subjectQuery = selectedSubjects.map(subject => `subjects=${subject}`).join('&');
-      
-      const res = await fetch(`http://localhost:3000/guides/list?page=${page}&pageSize=${pageSize}&search=${search}&orderFactor=${orderFactor.orderFactor}&order=${orderFactor.order}&${subjectQuery}`, {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const subjectQuery = selectedSubjects
+        .map((subject) => `subjects=${subject}`)
+        .join("&");
+
+      const res = await fetch(
+        `http://localhost:3000/guides/list?page=${page}&pageSize=${pageSize}&search=${search}&orderFactor=${orderFactor.orderFactor}&order=${orderFactor.order}&${subjectQuery}`,
+        {
+          method: "GET",
+          credentials: "include",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (res.ok) {
         const data = await res.json();
-        
+
         setGuides(data.guides);
-        setTotalPages(data.totalPages)
+        setTotalPages(data.totalPages);
       } else {
         throw new Error("Failed to fetch guides");
       }
@@ -73,16 +74,16 @@ export default function Guides() {
     fetchGuideList();
   }, [orderFactor, page, search, pageSize, selectedSubjects]);
   const [lessonCart, setLessonCart] = useState<number[]>(() => {
-    const savedCart = localStorage.getItem('lessonCart');
+    const savedCart = localStorage.getItem("lessonCart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('guideCart', JSON.stringify(guideCart));
+    localStorage.setItem("guideCart", JSON.stringify(guideCart));
   }, [guideCart]);
 
   useEffect(() => {
-    localStorage.setItem('lessonCart', JSON.stringify(lessonCart));
+    localStorage.setItem("lessonCart", JSON.stringify(lessonCart));
   }, [lessonCart]);
 
   const addToGuideCart = (id: number) => {
@@ -92,7 +93,6 @@ export default function Guides() {
   const removeFromGuideCart = (id: number) => {
     setGuideCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
   };
-
 
   const removeFromLessonCart = (id: number) => {
     setLessonCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
@@ -113,30 +113,35 @@ export default function Guides() {
             onChange={(e) => setSearch(e.currentTarget.value)}
             placeholder="Keresés"
           />
-        <hr className="dark:border-white border h-7" />
+          <hr className="dark:border-white border h-7" />
         </span>
         <span className="flex flex-row gap-4 flex-1">
-
-        {guideAttributes.map((attr) => (
-          <OrderSelector key={attr} text={attr} onChange={handleOrderChange} />
-        ))}
-        <span className="flex flex-row gap-2">
-        {subjects.map((subject) => (
-          <SubjectSelector
-            key={subject}
-            subject={subject}
-            onClick={() => {
-              if (selectedSubjects.includes(subject)) {
-                setSelectedSubjects(selectedSubjects.filter((s) => s !== subject));
-              } else {
-                setSelectedSubjects([...selectedSubjects, subject]);
-              }
-            }}
-            selected={selectedSubjects.includes(subject)}
+          {guideAttributes.map((attr) => (
+            <OrderSelector
+              key={attr}
+              text={attr}
+              onChange={handleOrderChange}
             />
           ))}
+          <span className="flex flex-row gap-2">
+            {subjects.map((subject) => (
+              <SubjectSelector
+                key={subject}
+                subject={subject}
+                onClick={() => {
+                  if (selectedSubjects.includes(subject)) {
+                    setSelectedSubjects(
+                      selectedSubjects.filter((s) => s !== subject)
+                    );
+                  } else {
+                    setSelectedSubjects([...selectedSubjects, subject]);
+                  }
+                }}
+                selected={selectedSubjects.includes(subject)}
+              />
+            ))}
           </span>
-          </span>
+        </span>
         <Cart
           guideCart={guideCart}
           removeFromGuideCart={removeFromGuideCart}
@@ -168,15 +173,23 @@ export default function Guides() {
         <Pagination>
           <PaginationContent>
             <PaginationItem className="">
-              <PaginationPrevious onClick={() => setPage((prev) => Math.max(prev - 1, 1))} />
+              <PaginationPrevious
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              />
             </PaginationItem>
             {Array.from({ length: totalPages }, (_, index) => (
               <PaginationItem key={index}>
-                <PaginationLink onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
+                <PaginationLink onClick={() => setPage(index + 1)}>
+                  {index + 1}
+                </PaginationLink>
               </PaginationItem>
             ))}
             <PaginationItem>
-              <PaginationNext onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} />
+              <PaginationNext
+                onClick={() =>
+                  setPage((prev) => Math.min(prev + 1, totalPages))
+                }
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

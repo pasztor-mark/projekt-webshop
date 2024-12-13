@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  getCookie,
-  GuideWithAuthor,
-  LessonWithHost,
-  User,
-} from "@/../../shared/types";
+import { GuideWithAuthor, LessonWithHost, User } from "@/../../shared/types";
 
 import { DialogClose, DialogContent } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
@@ -17,7 +12,6 @@ export default function Payment({
   totalPrice,
   lessons = [],
   guides = [],
-  
 }: {
   user: User;
   guideCart: number[];
@@ -25,7 +19,6 @@ export default function Payment({
   totalPrice: number;
   lessons?: LessonWithHost[];
   guides?: GuideWithAuthor[];
-  
 }) {
   const [pendingPayment, setPendingPayment] = useState<{
     id: number;
@@ -33,14 +26,12 @@ export default function Payment({
     status: string;
   } | null>(null);
   async function updateStatus(id: number) {
-    const token = getCookie("token");
     console.log(id);
     const res = await fetch(`http://localhost:3000/orders/${id}/status`, {
       method: "PATCH",
       credentials: "include",
       mode: "cors",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -60,8 +51,6 @@ export default function Payment({
     if (!user) return;
 
     async function fetchPendingPayment() {
-      const token = getCookie("token");
-
       const res = await fetch(
         `http://localhost:3000/orders/customer/${user.id}/pending`,
         {
@@ -69,7 +58,6 @@ export default function Payment({
           credentials: "include",
           mode: "cors",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -84,13 +72,11 @@ export default function Payment({
     }
 
     async function createNewPayment() {
-      const token = getCookie("token");
       const res = await fetch(`http://localhost:3000/orders`, {
         method: "POST",
         credentials: "include",
         mode: "cors",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
 
@@ -119,7 +105,6 @@ export default function Payment({
     <DialogContent>
       <section className="flex flex-row justify-between mx-auto">
         <div className="flex flex-col gap-5">
-          
           {pendingPayment ? (
             lessons.map((lesson: LessonWithHost) => (
               <CartItem
@@ -144,7 +129,9 @@ export default function Payment({
           ) : (
             <p>Nincs tanóra a kosarában.</p>
           )}
-          <p className="text-xl">Összesen: <b>{totalPrice}</b> Ft</p>
+          <p className="text-xl">
+            Összesen: <b>{totalPrice}</b> Ft
+          </p>
           {pendingPayment && (
             <Button
               onClick={() => {
@@ -155,7 +142,9 @@ export default function Payment({
               Fizetés
             </Button>
           )}
-        <DialogClose onClick={() => window.location.reload()}>Vissza</DialogClose>
+          <DialogClose onClick={() => window.location.reload()}>
+            Vissza
+          </DialogClose>
         </div>
       </section>
     </DialogContent>

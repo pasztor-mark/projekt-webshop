@@ -12,7 +12,6 @@ import {
 } from "../ui/drawer";
 import { Separator } from "../ui/separator";
 import {
-  getCookie,
   GuideWithAuthor,
   LessonWithHost,
   User,
@@ -47,13 +46,10 @@ export default function Cart({
     const lessonUrl = `http://localhost:3000/lessons/cart?ids=${lessonIds}`;
     const guideUrl = `http://localhost:3000/guides/cart?ids=${guideIds}`;
 
-    const token = getCookie("token");
-
     const lessons = await fetch(lessonUrl, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -69,7 +65,6 @@ export default function Cart({
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -136,7 +131,7 @@ export default function Cart({
           <p className="text-sm text-right">Az ár tartalmazza az ÁFÁ-t.</p>
 
           <Dialog open={dialogState}>
-          <DialogTrigger asChild>
+            <DialogTrigger asChild>
               <Button
                 className="bg-emerald-500"
                 onClick={() => setDialogState(true)}
@@ -145,15 +140,14 @@ export default function Cart({
                 Fizetés
               </Button>
             </DialogTrigger>
-          <Payment
-            user={user}
-            guideCart={guideCart}
-            lessonCart={lessonCart}
-            totalPrice={guideSubtotal + lessonSubtotal}
-            lessons={lessons}
-            guides={guides}
-            
-          />
+            <Payment
+              user={user}
+              guideCart={guideCart}
+              lessonCart={lessonCart}
+              totalPrice={guideSubtotal + lessonSubtotal}
+              lessons={lessons}
+              guides={guides}
+            />
           </Dialog>
           <DrawerClose>
             <Button variant="ghost">Vissza</Button>

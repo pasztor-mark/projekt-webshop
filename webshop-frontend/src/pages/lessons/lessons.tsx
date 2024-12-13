@@ -1,13 +1,7 @@
 import OrderSelector from "@/components/Listing/OrderSelector";
 import { Input } from "@/components/ui/input";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import {
-  getCookie,
-  Lesson,
-  Subject,
-  User,
-  LessonWithHost,
-} from "@/../../shared/types";
+import { Lesson, Subject, User, LessonWithHost } from "@/../../shared/types";
 import { useEffect, useState } from "react";
 
 import {
@@ -44,7 +38,7 @@ export default function Lessons() {
   const { user }: { user: User } = useOutletContext();
 
   const [lessons, setLessons] = useState<LessonWithHost[] | null>(null);
-  
+
   const [orderFactor, setOrderFactor] = useState<{
     orderFactor: string;
     order: "asc" | "desc";
@@ -62,7 +56,6 @@ export default function Lessons() {
 
   useEffect(() => {
     async function fetchLessonList() {
-      const token = getCookie("token");
       const subjectQuery = selectedSubjects
         .map((subject) => `subjects=${subject}`)
         .join("&");
@@ -74,7 +67,6 @@ export default function Lessons() {
           credentials: "include",
           mode: "cors",
           headers: {
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -91,7 +83,6 @@ export default function Lessons() {
     fetchLessonList();
   }, [orderFactor, page, search, pageSize, selectedSubjects]);
 
- 
   useEffect(() => {
     localStorage.setItem("lessonCart", JSON.stringify(lessonCart));
   }, [lessonCart]);
@@ -107,7 +98,6 @@ export default function Lessons() {
   const removeFromLessonCart = (id: number) => {
     setLessonCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
   };
-
 
   const removeFromGuideCart = (id: number) => {
     setGuideCart((prevCart) => prevCart.filter((itemId) => itemId !== id));
@@ -132,35 +122,32 @@ export default function Lessons() {
           </span>
           <hr className="dark:border-white border h-7" />
           <span className="flex flex-row gap-2">
-
-          {guideAttributes.map((attr) => (
-            <OrderSelector
-            key={attr}
-              text={attr}
-              onChange={handleOrderChange}
-            />
-          ))}
-            </span>
-            <span className="flex flex-row gap-2">
-
-
-          {subjects.map((subject) => (
-            <SubjectSelector
-            key={subject}
-            subject={subject}
-            onClick={() => {
-              if (selectedSubjects.includes(subject)) {
-                setSelectedSubjects(
-                  selectedSubjects.filter((s) => s !== subject)
-                  );
-                } else {
-                  setSelectedSubjects([...selectedSubjects, subject]);
-                }
-              }}
-              selected={selectedSubjects.includes(subject)}
+            {guideAttributes.map((attr) => (
+              <OrderSelector
+                key={attr}
+                text={attr}
+                onChange={handleOrderChange}
               />
             ))}
-            </span>
+          </span>
+          <span className="flex flex-row gap-2">
+            {subjects.map((subject) => (
+              <SubjectSelector
+                key={subject}
+                subject={subject}
+                onClick={() => {
+                  if (selectedSubjects.includes(subject)) {
+                    setSelectedSubjects(
+                      selectedSubjects.filter((s) => s !== subject)
+                    );
+                  } else {
+                    setSelectedSubjects([...selectedSubjects, subject]);
+                  }
+                }}
+                selected={selectedSubjects.includes(subject)}
+              />
+            ))}
+          </span>
         </span>
         <Cart
           lessonCart={lessonCart}
@@ -188,7 +175,7 @@ export default function Lessons() {
             <p>Próbálj meg egy másik keresést!</p>
           </div>
         )}
-        </div>
+      </div>
 
       <div className="lg:fixed my-5 lg:left-1/2 bottom-6 bg-neutral-300 dark:bg-stone-500 rounded-xl">
         <Pagination>
