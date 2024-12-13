@@ -33,7 +33,7 @@ export default function LessonDisplay({
       </CardContent>
       <Separator />
       <CardFooter className="basis-2/12 flex flex-col items-center justify-center pt-4">
-      <Button>
+      <Button onClick={() => window.location.href = "/lessons/" + lesson.id!}>
         Megtekintés
       </Button>
        

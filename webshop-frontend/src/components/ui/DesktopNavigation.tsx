@@ -10,7 +10,7 @@ import {
   FaHouse,
   FaPencil,
   FaPeopleGroup,
-  FaPersonChalkboard,
+  
   
   FaPlus,
   FaUserClock,
@@ -178,8 +178,8 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
                   <NavLink to={"/user/" + user?.id}>
                     <Avatar className="border border-emerald-500">
                       <AvatarFallback className="text-xl">
-                        {user ? user.name[0].toUpperCase() : "?"}
-                        {user ? user.name[1] : "?"}
+                        {user?.name.length! > 0 ? user?.name[0].toUpperCase() : "?"}
+                        {user?.name.length! ? user?.name[1] : "?"}
                       </AvatarFallback>
                     </Avatar>
                     <p className="text-lg">{user ? user.name : "USER"}</p>

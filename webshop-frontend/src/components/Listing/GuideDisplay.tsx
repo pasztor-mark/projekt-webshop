@@ -33,7 +33,7 @@ export default function GuideDisplay({
       <Separator />
       <CardFooter className="basis-2/12 flex flex-col">
         
-        <Button>
+        <Button onClick={() => window.location.href = "/guides/" + guide.id!}>
           Megtekintés
         </Button>
       </CardFooter>

@@ -12,6 +12,8 @@ import PurchasedGuides from "./pages/Purchased/PurchasedGuides";
 import AuthoredGuides from "./pages/Created/AuthoredGuides";
 import HostedLessons from "./pages/Created/HostedLessons";
 import Authors from "./pages/Users/AuthorList";
+import LessonPage from "./components/Listing/LessonPage";
+import GuidePage from "./components/Listing/GuidePage";
 
 
 
@@ -24,8 +26,14 @@ function App() {
             <Route path="/authorize" element={<LoginPage />} />
             <Route path="/" element={<PageLayout />}>
               <Route index element={<Home/>} />
-              <Route path="guides" element={<Guides/>} />
-              <Route path="lessons" element={<Lessons/>} />
+              <Route path="guides" >
+                <Route index element={<Guides/>} />
+                <Route path=":guideId" element={<GuidePage/>} />
+              </Route>
+              <Route path="lessons">
+                <Route index element={<Lessons/>} />
+                <Route path=":lessonId" element={<LessonPage/>} />
+              </Route>
               <Route path="authors" element={<Authors/>} />
               <Route path="user/:userId" element={<Profile/>} />
               <Route path="library">

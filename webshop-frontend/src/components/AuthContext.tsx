@@ -27,12 +27,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        console.log('Checking authentication...');
+        
         const response = await fetchWithTimeout("http://localhost:3000/auth/check-auth", {
           method: "GET",
           credentials: 'include',
         }, 1000);
-        console.log('Response:');
+        
         if (response.ok) {
           const data = await response.json();
           setIsAuthenticated(true);
@@ -55,6 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (user: User) => {
     setIsAuthenticated(true);
     setUser(user);
+    console.log('User logged in:', user);
   };
 
   const logout = async () => {

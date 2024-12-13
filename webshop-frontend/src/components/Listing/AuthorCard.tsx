@@ -1,10 +1,10 @@
-import { SubjectComponent } from "@/lib/componentGenerator";
+
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { User,  } from "../../../../shared/types";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { Navigate } from "react-router";
+
 
 export default function AuthorCard({
   user
@@ -29,9 +29,7 @@ export default function AuthorCard({
         </div>
       </CardHeader>
       <CardContent className="basis-7/12">
-        <span className="flex justify-between font-semibold my-2 flex-row-reverse">
-          
-        </span>
+
         
       </CardContent>
       <Separator />

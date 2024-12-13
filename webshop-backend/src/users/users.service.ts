@@ -57,6 +57,29 @@ export class UsersService {
   async findUserByEmail(email: string) {
     return await this.db.user.findFirst(({ where: { email: email } }));
   }
+  async updateProfileName(userId: number, name: string) {
+    await this.db.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        name: name
+      }
+    })
+    return `Felhasználói név frissítve`
+  }
+  async updatePassword(userId: number, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await this.db.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        password: hashedPassword
+      }
+    })
+    return `Jelszó frissítve`
+  }
   async findAuthors() {
     const authors =  await this.db.user.findMany({
       where: {

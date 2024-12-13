@@ -20,8 +20,16 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+  @Patch(':id/name')
+  updateName(@Param('id') id: number, @Body('name') name: string) {
+    return this.usersService.updateProfileName(+id, name);
+  }
 
-  
+
+  @Patch(':id/password')
+  updatePassword(@Param('id') id: number, @Body('password') password: string) {
+    return this.usersService.updatePassword(+id, password);
+  }
   @Get('authors')
   findAuthors() {
     return this.usersService.findAuthors();

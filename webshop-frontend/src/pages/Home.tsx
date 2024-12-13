@@ -5,7 +5,7 @@ import LessonData from "@/components/Home/lesson-data";
 import GuideData from "@/components/Home/guide-data";
 import { fetchGuides, fetchLessons } from "@/lib/requests";
 export default function Home() {
-  const { user }: { user: User } = useOutletContext();
+  const { user }: { user: User } =  useOutletContext();
   const [lessons, setLessons] = useState<Lesson[] | null>(null);
   const [guides, setGuides] = useState<Guide[] | null>(null);
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Home() {
       const gui = await fetchGuides(token, user);
       setLessons(les);
       setGuides(gui);
-      console.log(gui)
+      
     }
     fetchHome()
   }, [user]);

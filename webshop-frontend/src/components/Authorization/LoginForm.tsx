@@ -51,7 +51,7 @@ const LoginForm = () => {
       }
     } catch (err: any) {
 
-        setError("Hiba történt a kérés feldolgozása közben.")
+        setError(err.message);
       
       
     }
