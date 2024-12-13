@@ -10,13 +10,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         let token = null;
         if (req && req.cookies) {
           token = req.cookies.token;
-          
+         
         }
+        
         return token;
       }]),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
+    
   }
 
   async validate(payload: any) {

@@ -20,12 +20,13 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll();
   }
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/name')
   updateName(@Param('id') id: number, @Body('name') name: string) {
     return this.usersService.updateProfileName(+id, name);
   }
-
-
+  
+  
   @Patch(':id/password')
   updatePassword(@Param('id') id: number, @Body('password') password: string) {
     return this.usersService.updatePassword(+id, password);
@@ -34,7 +35,7 @@ export class UsersController {
   findAuthors() {
     return this.usersService.findAuthors();
   }
-
+  
   @UseGuards(JwtAuthGuard)
   @Get('paying')
   findPayingUsers() {

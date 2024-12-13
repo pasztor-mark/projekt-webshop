@@ -29,11 +29,11 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState<string>("");
   const {logout} = useAuth()
   async function handleNameUpdate() {
-    const token = getCookie("token");
+    
     const req = await fetch("http://localhost:3000/users/" + fetchedUser?.id + "/name", {
       method: "PATCH",
+      credentials: "include",
       headers: {
-        'Authorization': "Bearer " + token,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name: newName }),
@@ -50,6 +50,7 @@ export default function Profile() {
     const token = getCookie("token");
     const req = await fetch("http://localhost:3000/users/" + fetchedUser?.id + "/password", {
       method: "PATCH",
+      credentials: "include",
       headers: {
         'Authorization': "Bearer " + token,
         "Content-Type": "application/json",
