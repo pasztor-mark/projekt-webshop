@@ -7,6 +7,11 @@ import Home from "./pages/Home";
 import Profile from "./pages/user/Profile";
 import Guides from "./pages/guides/guides";
 import Lessons from "./pages/lessons/lessons";
+import PurchasedLessons from "./pages/Purchased/PurchasedLessons";
+import PurchasedGuides from "./pages/Purchased/PurchasedGuides";
+import AuthoredGuides from "./pages/Created/AuthoredGuides";
+import HostedLessons from "./pages/Created/HostedLessons";
+import Authors from "./pages/Users/AuthorList";
 
 
 
@@ -21,8 +26,14 @@ function App() {
               <Route index element={<Home/>} />
               <Route path="guides" element={<Guides/>} />
               <Route path="lessons" element={<Lessons/>} />
+              <Route path="authors" element={<Authors/>} />
               <Route path="user/:userId" element={<Profile/>} />
-              
+              <Route path="library">
+                <Route path="guides" element={<PurchasedGuides/>} />
+                <Route path="lessons" element={<PurchasedLessons/>} />
+              </Route>
+              <Route path="author/:authorId" element={<AuthoredGuides/>} />
+              <Route path="host/:hostId" element={<HostedLessons/>} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -141,6 +141,21 @@ export class LessonsService {
   async findAll() {
     return await this.db.lesson.findMany();
   }
+  async findManyPurchasedLessonsByCustomerId(customerId: number) {
+    return await this.db.lesson.findMany({
+      where: {
+        orders: {
+          some: {
+            customerId,
+          },
+        },
+      },
+      include: {
+        host: true,
+        orders: true,
+      }
+    });
+  }
   async findManyByIds(ids: number[]) {
     return await this.db.lesson.findMany({
       where: {
@@ -156,6 +171,10 @@ export class LessonsService {
       where: {
         hostId,
       },
+      include: {
+        host: true,
+        
+      }
     });
   }
   async findManyByParticipantId(participantId: number) {

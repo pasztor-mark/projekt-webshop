@@ -58,7 +58,7 @@ export class UsersService {
     return await this.db.user.findFirst(({ where: { email: email } }));
   }
   async findAuthors() {
-    return await this.db.user.findMany({
+    const authors =  await this.db.user.findMany({
       where: {
       OR: [
         {
@@ -78,6 +78,8 @@ export class UsersService {
       hostedLessons: true,
       },
     });
+    authors.forEach(author => delete author.password);
+    return authors;
   }
 async findPayingUsers() {
     return await this.db.user.findMany({

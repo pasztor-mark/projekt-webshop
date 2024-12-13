@@ -23,6 +23,22 @@ export class GuidesService {
   async findAll() {
     return await this.db.guide.findMany();
   }
+  async findManyPurchasedGuidesByCustomerId(customerId: number) {
+    return await this.db.guide.findMany({
+      where: {
+        orders: {
+          some: {
+            customerId,
+          },
+        },
+      },
+      include: {
+        author: true,
+        orders: true,
+      }
+    });
+    
+  }
   async findManyByIds(ids: number[]) {
     return await this.db.guide.findMany({
       where: {
@@ -109,6 +125,10 @@ export class GuidesService {
       where: {
         authorId,
       },
+      include: {
+        author: true,
+        orders: true,
+      }
     });
   }
 

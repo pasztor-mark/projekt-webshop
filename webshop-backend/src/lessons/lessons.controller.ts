@@ -35,9 +35,17 @@ export class LessonsController {
     
     return await this.lessonsService.findLessonList(+page, +pageSize, search, orderFactor, order, subjects);
   }
+  @Get('customer/:customerId')
+  findManyByCustomerId(@Param('customerId') customerId: string) {
+    return this.lessonsService.findManyPurchasedLessonsByCustomerId(+customerId);
+  }
   @Get('cart')
   findManyByIds(@Query('ids') ids: string) {
     return this.lessonsService.findManyByIds(ids.split(',').map(id => +id));
+  }
+  @Get('host/:hostId')
+  findManyByHostId(@Param('hostId') hostId: string) {
+    return this.lessonsService.findManyByHostId(+hostId);
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -45,10 +53,6 @@ export class LessonsController {
   }
 
 
-  @Get('host/:hostId')
-  findManyByHostId(@Param('hostId') hostId: string) {
-    return this.lessonsService.findManyByHostId(+hostId);
-  }
 
   @Get('subject/:subject')
   findManyBySubject(@Param('subject') subject: string) {

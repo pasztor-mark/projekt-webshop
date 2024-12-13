@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 export default function LessonCard({
   lesson,
   user,
+  
   addToLessonCart,
   removeFromLessonCart,
   lessonCart,
@@ -50,6 +51,7 @@ export default function LessonCard({
       </CardContent>
       <Separator />
       <CardFooter className="basis-2/12 flex flex-col">
+      
         <p className="font-semibold my-2 text-lg text-center mx-auto">{lesson.price} Ft</p>
         {isPurchased ? (
           <Button disabled className="w-full">

@@ -61,7 +61,7 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
         {
           label: "Írók",
           icon: <FaPencil size={28} />,
-          to: "/guides/authors",
+          to: "/authors",
         },
       ],
     },
@@ -74,11 +74,6 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
           to: "/lessons",
         },
 
-        {
-          label: "Tanárok",
-          icon: <FaPersonChalkboard size={28} />,
-          to: "/lessons/tutors",
-        },
       ],
     },
     {
@@ -87,22 +82,22 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
         {
           label: "Vásárolt tananyagok",
           icon: <FaBookmark size={28} />,
-          to: "/products",
+          to: "/library/guides",
         },
         {
           label: "Vásárolt tanórák",
           icon: <FaUserClock size={28} />,
-          to: "/products/categories",
+          to: "/library/lessons",
         },
         {
           label: "Írt tananyagok",
           icon: <FaClipboardList size={28} />,
-          to: "/products/orders",
+          to: "/author/" + user?.id,
         },
         {
           label: "Tanított tanórák",
           icon: <FaUsersRectangle size={28} />,
-          to: "/products/customers",
+          to: "/host/" + user?.id,
         },
          
       ],

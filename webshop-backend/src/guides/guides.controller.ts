@@ -34,7 +34,10 @@ export class GuidesController {
   findManyByIds(@Query('ids') ids: string) {
     return this.guidesService.findManyByIds(ids.split(',').map(id => +id));
   }
-
+  @Get('customer/:customerId')
+  findManyByCustomerId(@Param('customerId') customerId: string) {
+    return this.guidesService.findManyPurchasedGuidesByCustomerId(+customerId);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.guidesService.findOne(+id);
