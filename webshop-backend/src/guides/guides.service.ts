@@ -10,14 +10,23 @@ export class GuidesService {
   constructor(private readonly db: PrismaService) {}
 
   async create(createGuideDto: CreateGuideDto) {
-    try {
-      const guide = await this.db.guide.create({
-        data: createGuideDto,
+
+      return await this.db.guide.create({
+        data: {
+          title: createGuideDto.title,
+          description: createGuideDto.description,
+          price: createGuideDto.price,
+          subject: createGuideDto.subject as $Enums.Subject,
+          level: createGuideDto.level as $Enums.Level,
+          author: {
+            connect: {
+              id: createGuideDto.authorId,
+            },
+          },
+          
+        },
       });
-      return guide;
-    } catch (error) {
-      return 'Hiba a mentés során';
-    }
+    
   }
 
   async findAll() {
@@ -173,7 +182,13 @@ export class GuidesService {
       where: {
         id,
       },
-      data: updateGuideDto,
+      data: {
+        title: updateGuideDto.title,
+        description: updateGuideDto.description,
+        price: updateGuideDto.price,
+        subject: updateGuideDto.subject as $Enums.Subject,
+        level: updateGuideDto.level as $Enums.Level,
+      },
     });
 
     return `#${id} útmutató frissítve`;

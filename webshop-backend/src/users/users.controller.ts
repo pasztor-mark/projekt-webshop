@@ -27,10 +27,12 @@ export class UsersController {
   }
   
   
+  @UseGuards(JwtAuthGuard)
   @Patch(':id/password')
   updatePassword(@Param('id') id: number, @Body('password') password: string) {
     return this.usersService.updatePassword(+id, password);
   }
+  @UseGuards(JwtAuthGuard)
   @Get('authors')
   findAuthors() {
     return this.usersService.findAuthors();

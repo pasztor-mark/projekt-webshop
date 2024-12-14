@@ -1,4 +1,4 @@
-import { IsInt, IsString, Max, MaxLength, Min, MinLength, IsDate } from 'class-validator'
+import { IsInt, IsString, Max, MaxLength, Min, MinLength, IsDate, IsEnum } from 'class-validator'
 import { $Enums } from '@prisma/client';
 import { Level, Subject } from '../../../../shared/types';
 
@@ -17,9 +17,11 @@ export class CreateGuideDto {
   @Min(0)
   @Max(500000)
   price: number;
-
+  
+  @IsEnum(Subject)
   subject: $Enums.Subject;
 
+  @IsEnum(Level)
   level: $Enums.Level;
 
   @IsInt()

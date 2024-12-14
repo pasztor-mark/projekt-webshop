@@ -4,12 +4,15 @@ import { User,  } from "../../../../shared/types";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { NavigateFunction } from "react-router";
 
 
 export default function AuthorCard({
-  user
+  user,
+  nav
 }: {
   user: User;
+  nav: NavigateFunction
 }) {
  
   return (
@@ -36,7 +39,8 @@ export default function AuthorCard({
       <CardFooter className="basis-2/12 flex flex-col">
         
         <Button onClick={() => {
-            window.location.href = "/user/" + user.id;
+          nav("/user/" + user.id);
+            //window.location.href = "/user/" + user.id;
         }}>
           Megtekintés
         </Button>

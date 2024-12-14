@@ -23,7 +23,7 @@ export default function AuthoredGuides() {
       );
       if (req.ok) {
         const data = await req.json();
-        console.log(data);
+        
         setGuides(data);
       }
     }

@@ -50,14 +50,18 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
       ],
     },
     {
-      group: "Útmutatók",
+      group: "Katalógus",
       items: [
         {
           label: "Tananyagok",
           icon: <FaBookmark size={28} />,
           to: "/guides",
         },
-
+        {
+          label: "Személyes tanórák",
+          icon: <FaPeopleGroup size={28} />,
+          to: "/lessons",
+        },
         {
           label: "Írók",
           icon: <FaPencil size={28} />,
@@ -65,17 +69,7 @@ export default function DesktopNavigation({ user }: { user: User | null }) {
         },
       ],
     },
-    {
-      group: "Tanórák",
-      items: [
-        {
-          label: "Személyes tanórák",
-          icon: <FaPeopleGroup size={28} />,
-          to: "/lessons",
-        },
-
-      ],
-    },
+   
     {
       group: "Tanulmányaim",
       items: [

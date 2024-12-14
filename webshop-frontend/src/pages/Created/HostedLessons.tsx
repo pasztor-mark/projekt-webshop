@@ -34,7 +34,7 @@ export default function HostedLessons() {
             className="text-center mx-auto text-emerald-500"
           />
           <h1 className="text-3xl">
-            {lessons && lessons.length > 0
+            {lessons && lessons?.length > 0
               ? lessons[0].host?.name
               : "Nem találjuk ezt az írót...  "}
           </h1>
@@ -42,7 +42,7 @@ export default function HostedLessons() {
       </div>
       <div>
         <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
-          {lessons && lessons.length > 0 ? (
+          {lessons && lessons?.length > 0 ? (
             lessons.map((lesson) => (
               <LessonDisplay key={lesson.id} lesson={lesson} />
             ))

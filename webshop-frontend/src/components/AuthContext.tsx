@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (user: User) => {
     setIsAuthenticated(true);
     setUser(user);
-    console.log('User logged in:', user);
+    
   };
 
   const logout = async () => {
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       window.location.href = '/authorize';
     } catch (error) {
-      console.error('Logout failed:', error);
+      
     }
   };
 

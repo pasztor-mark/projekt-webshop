@@ -26,7 +26,7 @@ export default function GuidePage() {
   return (
     <>
       {guide ? (
-        <div className="w-full h-full flex flex-col items-center  m-3 pt-12 rounded-3xl bg-neutral-700">
+        <div className="w-full h-full flex flex-col items-center  m-3 pt-12 rounded-3xl bg-neutral-200 dark:bg-neutral-700">
           <h1 className="text-3xl">{guide?.title}</h1>
           <Separator className="my-3" />
           <p>{guide?.description}</p>

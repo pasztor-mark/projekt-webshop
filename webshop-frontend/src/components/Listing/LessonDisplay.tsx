@@ -29,7 +29,7 @@ export default function LessonDisplay({
           <h3>{lesson.subject}</h3>
         </span>
         <h3 className="w-full">{lesson.description}</h3>
-        {lesson.orders.length > 0 && <p className="text-center">{lesson.orders.length} tanuló</p>}
+        
       </CardContent>
       <Separator />
       <CardFooter className="basis-2/12 flex flex-col items-center justify-center pt-4">

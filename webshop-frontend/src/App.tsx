@@ -14,6 +14,8 @@ import HostedLessons from "./pages/Created/HostedLessons";
 import Authors from "./pages/Users/AuthorList";
 import LessonPage from "./components/Listing/LessonPage";
 import GuidePage from "./components/Listing/GuidePage";
+import NewGuide from "./pages/Contribute/NewGuide";
+import NewLesson from "./pages/Contribute/NewLesson";
 
 
 
@@ -42,6 +44,10 @@ function App() {
               </Route>
               <Route path="author/:authorId" element={<AuthoredGuides/>} />
               <Route path="host/:hostId" element={<HostedLessons/>} />
+              <Route path="contribute">
+                <Route path="guide" element={<NewGuide/>} />
+                <Route path="lesson" element={<NewLesson/>} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

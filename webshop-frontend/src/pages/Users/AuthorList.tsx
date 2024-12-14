@@ -3,9 +3,11 @@ import { FaBookAtlas } from "react-icons/fa6";
 import { User } from "../../../../shared/types";
 
 import AuthorCard from "@/components/Listing/AuthorCard";
+import { useNavigate } from "react-router";
 
 export default function Authors() {
   const [authors, setAuthors] = useState<User[] | null>(null);
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchAuthors() {
       const req = await fetch("http://localhost:3000/users/authors/", {
@@ -17,7 +19,7 @@ export default function Authors() {
       });
       if (req.ok) {
         const data = await req.json();
-        console.log(data);
+        
         setAuthors(data);
       }
     }
@@ -38,7 +40,7 @@ export default function Authors() {
         <div className=" mt-6 mb-20 grid grid-cols-1 xl:grid-cols-4 xl:grid-rows-2 gap-4">
           {authors ? (
             authors.map((author) => (
-              <AuthorCard key={author.id} user={author} />
+              <AuthorCard nav={navigate} key={author.id} user={author} />
             ))
           ) : (
             <></>

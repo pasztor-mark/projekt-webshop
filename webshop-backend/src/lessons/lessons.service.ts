@@ -11,36 +11,26 @@ export class LessonsService {
 
   async create(createLessonDto: CreateLessonDto) {
     try {
-      const lesson = await this.db.lesson.create({
+      return await this.db.lesson.create({
         data: {
           title: createLessonDto.title,
           description: createLessonDto.description,
           price: createLessonDto.price,
           startTime: createLessonDto.startTime,
           endTime: createLessonDto.endTime,
-          subject: createLessonDto.subject,
-          level: createLessonDto.level,
           host: {
-            connect: { id: createLessonDto.hostId },
+            connect: {
+              id: createLessonDto.hostId,
+            },
           },
-          participants: {
-            connect: createLessonDto.participantIds.map(id => ({ id })),
-          },
-          orders: {
-            create: createLessonDto.participantIds.map(id => ({
-              customerId: id,
-              status: 'Paid',
-              lessons: {
-                connect: { id: lesson.id },
-              },
-              totalPrice: createLessonDto.price,
-            })),
-          },
-        },
+          level: createLessonDto.level as $Enums.Level,
+          subject: createLessonDto.subject as $Enums.Subject,
+        }
       });
-      return 'Új tanóra létrehozva';
+      
     } catch (error) {
-      return 'Hiba a mentés során';
+      console.log(error);
+      return error
     }
   }
 
@@ -232,7 +222,15 @@ export class LessonsService {
         where: {
           id,
         },
-        data: updateLessonDto,
+        data: {
+          title: updateLessonDto.title,
+          description: updateLessonDto.description,
+          price: updateLessonDto.price,
+          startTime: updateLessonDto.startTime,
+          endTime: updateLessonDto.endTime,
+          level: updateLessonDto.level as $Enums.Level,
+          subject: updateLessonDto.subject as $Enums.Subject,
+        }
       });
     } catch (error) {
       throw new BadRequestException();

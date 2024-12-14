@@ -77,7 +77,10 @@ export default function Profile() {
         setUser(req);
       
     }
-    getProfile();
+    if (user && userId) {
+
+      getProfile();
+    }
   }, []);
 
   const copyToClipboard = () => {

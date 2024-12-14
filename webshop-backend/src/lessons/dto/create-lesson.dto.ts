@@ -1,5 +1,6 @@
-import { IsString, MinLength, MaxLength, IsInt, Min, Max, IsArray, IsDate } from 'class-validator';
+import { IsString, MinLength, MaxLength, IsInt, Min, Max, IsArray, IsDate, IsEnum, IsOptional } from 'class-validator';
 import { $Enums } from '@prisma/client';
+import { Level, Subject } from '../../../../shared/types';
 
 export class CreateLessonDto {
   @IsString()
@@ -17,20 +18,21 @@ export class CreateLessonDto {
   @Max(500000)
   price: number;
 
-  @IsDate()
+  
   startTime: Date;
 
-  @IsDate()
+  
   endTime: Date;
 
   @IsInt()
   hostId: number;
 
+  @IsEnum(Level)
   level: $Enums.Level;
-
+  @IsEnum(Subject)
   subject: $Enums.Subject;
 
   @IsArray()
-  @IsInt({ each: true })
+  @IsOptional()
   participantIds: number[];
 }

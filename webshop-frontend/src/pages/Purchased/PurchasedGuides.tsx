@@ -15,6 +15,7 @@ export default function PurchasedGuides() {
         "http://localhost:3000/guides/customer/" + user.id,
         {
           method: "GET",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -22,7 +23,7 @@ export default function PurchasedGuides() {
       );
       if (req.ok) {
         const data = await req.json();
-        setGuides(data[0]);
+        setGuides(data);
       }
     }
     fetchPurchasedGuides();
@@ -49,8 +50,8 @@ export default function PurchasedGuides() {
             guides.map((guide) => <GuideDisplay key={guide.id} guide={guide} />)
           ) : (
             <div className="bg-stone-300 dark:bg-neutral-800 p-4 rounded-3xl flex flex-col gap-2 col-span-full row-span-full">
-              <h3>Nincs vásárolt tanóra.</h3>
-              <p>Vásárolj a Tanórák katalógusban.</p>
+              <h3>Nincs vásárolt tananyag.</h3>
+              <p>Vásárolj a Tananyagok katalógusban.</p>
             </div>
           )}
         </div>
